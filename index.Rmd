@@ -5,9 +5,12 @@
    theme: sky
 ---
   
-<font color="red"> Error in file(file, "rt") : cannot open the connection In addition: Warning message: In file(file, "rt") : cannot open file 'file.txt': No such file or directory</font><p>
+
+> <font color="red"> Error in file(file, "rt") : cannot open the connection In addition: Warning message: In file(file, "rt") : cannot open file 'file.txt': No such file or directory</font>
+
 
 *Explanation:* the file 'file.txt' is not in your current working directory.<p>
+
 
 ```{r eval = FALSE}
 # To see the current location of the working directory
