@@ -1,22 +1,32 @@
 ---
-  title: "Error decoder for R beginners"
+  title: "Bug decoder for R beginners"
   output:
   html_document:
    theme: sky
 ---
-  
+# Pssst: _R bug not here? Send the bug to the Slack rtvmworkshop chatroom, including ?rbug in your message so that we can search for it
+
+> <font color="red"> Error: object 'yourvar' not found</font>  
+*Explanation:* The object 'yourvar' is not in the R environment. Did you assign it a value?
+```{r}
+yourvar <- 2 # assign the value 2 to yourvar
+yourvar # print it
+yourvar * 2 # success
+```
+
+If it is the column of a dataframe, make sure you specify that with `mytunadf$yourvar`.
 
 > <font color="red"> Error in file(file, "rt") : cannot open the connection In addition: Warning message: In file(file, "rt") : cannot open file 'file.txt': No such file or directory</font>
 
 
-*Explanation:* the file 'file.txt' is not in your current working directory.<p>
+*Explanation:* the file 'file.txt' is not in your current working directory.
 
 
 ```{r eval = FALSE}
 # To see the current location of the working directory
 getwd()
 # To change the location of your working directory
-setwd(/my/new/working/directory) # specify path here, e.g. C:/Projects/OFP-data
+setwd("/my/new/working/directory"") # specify path here, e.g. "C:/Projects/OFP-data" (note the "")
 # To see what files are in your current working directory
 list.files() # is file.txt here?
 ```

@@ -11,7 +11,7 @@
 
 
 
-<title>Error decoder for R beginners</title>
+<title>Bug decoder for R beginners</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -117,22 +117,34 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Error decoder for R beginners</h1>
+<h1 class="title toc-ignore">Bug decoder for R beginners</h1>
 
 </div>
 
 
+<div id="pssst-_r-bug-not-here-send-the-bug-to-the-slack-rtvmworkshop-chatroom-including-rbug-in-your-message-so-that-we-can-search-for-it" class="section level1">
+<h1>Pssst: _R bug not here? Send the bug to the Slack rtvmworkshop chatroom, including ?rbug in your message so that we can search for it</h1>
+<blockquote>
+<p><font color="red"> Error: object ‘yourvar’ not found</font><br />
+<em>Explanation:</em> The object ‘yourvar’ is not in the R environment. Did you assign it a value?</p>
+</blockquote>
+<pre class="r"><code>yourvar &lt;- 2 # assign the value 2 to yourvar
+yourvar # print it</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>yourvar * 2 # success</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>If it is the column of a dataframe, make sure you specify that with <code>mytunadf$yourvar</code>.</p>
 <blockquote>
 <p><font color="red"> Error in file(file, “rt”) : cannot open the connection In addition: Warning message: In file(file, “rt”) : cannot open file ‘file.txt’: No such file or directory</font></p>
 </blockquote>
-<em>Explanation:</em> the file ‘file.txt’ is not in your current working directory.
-<p>
+<p><em>Explanation:</em> the file ‘file.txt’ is not in your current working directory.</p>
 <pre class="r"><code># To see the current location of the working directory
 getwd()
 # To change the location of your working directory
-setwd(/my/new/working/directory) # specify path here, e.g. C:/Projects/OFP-data
+setwd(&quot;/my/new/working/directory&quot;&quot;) # specify path here, e.g. &quot;C:/Projects/OFP-data&quot; (note the &quot;&quot;)
 # To see what files are in your current working directory
 list.files() # is file.txt here?</code></pre>
+</div>
 
 
 
