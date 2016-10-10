@@ -7,10 +7,13 @@
   
 <font color="red"> Error in file(file, "rt") : cannot open the connection In addition: Warning message: In file(file, "rt") : cannot open file 'file.txt': No such file or directory</font><p>
 
-Explanation: the file 'file.txt' is not in your current working directory. To see where that is, type `getwd()`. To see what files are currently in it, type `list.files()`, to change the working directory to a new value, use `setwd()`.<p>
-
+*Explanation:* the file 'file.txt' is not in your current working directory.<p>
 
 ```{r eval = FALSE}
-## To see the current location of the working directory
+# To see the current location of the working directory
 getwd()
+# To change the location of your working directory
+setwd(/my/new/working/directory) # specify path here, e.g. C:/Projects/OFP-data
+# To see what files are in your current working directory
+list.files() # is file.txt here?
 ```
