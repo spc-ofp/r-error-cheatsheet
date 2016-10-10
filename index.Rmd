@@ -4,22 +4,27 @@
   html_document:
    theme: sky
 ---
-# Pssst: _R bug not here? Send the bug to the Slack rtvmworkshop chatroom, including ?rbug in your message so that we can search for it
+*Pssst:* R bug not here? Send the bug to Slack #rtvmworkshop, including ?rbug in your message so that we can search for it.  
+
+***
 
 > <font color="red"> Error: object 'yourvar' not found</font>  
-*Explanation:* The object 'yourvar' is not in the R environment. Did you assign it a value?
+**Explanation:** The object 'yourvar' is not in the R environment. Did you assign it a value?
+```{r eval=FALSE}
+ls() # to view the objects currently in the R environment
+```
 ```{r}
 yourvar <- 2 # assign the value 2 to yourvar
-yourvar # print it
+yourvar # now print it
 yourvar * 2 # success
 ```
 
-If it is the column of a dataframe, make sure you specify that with `mytunadf$yourvar`.
+If it is the column of a dataframe, make sure you specify that with `mytunadf$yourvar`.  
 
-> <font color="red"> Error in file(file, "rt") : cannot open the connection In addition: Warning message: In file(file, "rt") : cannot open file 'file.txt': No such file or directory</font>
+***  
 
-
-*Explanation:* the file 'file.txt' is not in your current working directory.
+> <font color="red"> Error in file(file, "rt") : cannot open the connection In addition: Warning message: In file(file, "rt") : cannot open file 'file.txt': No such file or directory</font>  
+**Explanation:** the file 'file.txt' is not in your current working directory.
 
 
 ```{r eval = FALSE}

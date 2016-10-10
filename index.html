@@ -122,29 +122,30 @@ $(document).ready(function () {
 </div>
 
 
-<div id="pssst-_r-bug-not-here-send-the-bug-to-the-slack-rtvmworkshop-chatroom-including-rbug-in-your-message-so-that-we-can-search-for-it" class="section level1">
-<h1>Pssst: _R bug not here? Send the bug to the Slack rtvmworkshop chatroom, including ?rbug in your message so that we can search for it</h1>
+<p><em>Pssst:</em> R bug not here? Send the bug to Slack #rtvmworkshop, including ?rbug in your message so that we can search for it.</p>
+<hr />
 <blockquote>
 <p><font color="red"> Error: object ‘yourvar’ not found</font><br />
-<em>Explanation:</em> The object ‘yourvar’ is not in the R environment. Did you assign it a value?</p>
+<strong>Explanation:</strong> The object ‘yourvar’ is not in the R environment. Did you assign it a value?</p>
 </blockquote>
+<pre class="r"><code>ls() # to view the objects currently in the R environment</code></pre>
 <pre class="r"><code>yourvar &lt;- 2 # assign the value 2 to yourvar
-yourvar # print it</code></pre>
+yourvar # now print it</code></pre>
 <pre><code>## [1] 2</code></pre>
 <pre class="r"><code>yourvar * 2 # success</code></pre>
 <pre><code>## [1] 4</code></pre>
 <p>If it is the column of a dataframe, make sure you specify that with <code>mytunadf$yourvar</code>.</p>
+<hr />
 <blockquote>
-<p><font color="red"> Error in file(file, “rt”) : cannot open the connection In addition: Warning message: In file(file, “rt”) : cannot open file ‘file.txt’: No such file or directory</font></p>
+<p><font color="red"> Error in file(file, “rt”) : cannot open the connection In addition: Warning message: In file(file, “rt”) : cannot open file ‘file.txt’: No such file or directory</font><br />
+<strong>Explanation:</strong> the file ‘file.txt’ is not in your current working directory.</p>
 </blockquote>
-<p><em>Explanation:</em> the file ‘file.txt’ is not in your current working directory.</p>
 <pre class="r"><code># To see the current location of the working directory
 getwd()
 # To change the location of your working directory
 setwd(&quot;/my/new/working/directory&quot;&quot;) # specify path here, e.g. &quot;C:/Projects/OFP-data&quot; (note the &quot;&quot;)
 # To see what files are in your current working directory
 list.files() # is file.txt here?</code></pre>
-</div>
 
 
 
