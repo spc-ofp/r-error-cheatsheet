@@ -5,7 +5,7 @@
       toc: true
 
 ---
-*Pssst:* R bug not here? Send the bug to Slack #rtvmworkshop, including ?rbug in your message so that we can search for it.  
+*Pssst:* R bug not here? Let us know and we will add it, including rbug in your subject so that we can search for it.
 
 ```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE, highlight=TRUE, prompt=TRUE)
