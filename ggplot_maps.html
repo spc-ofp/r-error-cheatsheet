@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>My first ggplot map</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="bootstrap.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R tutorials</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="data-manip-intro.html">Data manipulation</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">My first ggplot map</h1>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>ggplot is a useful way to create maps and add layers to the map.</p>
+<p>In this example we will create a map, highlight the PNA Member EEZs and then overlay the regions of the South Pacific albacore assessment.</p>
+</div>
+<div id="step1" class="section level1">
+<h1>Step1</h1>
+<p>Load all the requited packages.</p>
+<pre class="r"><code>library(survival)
+library(maps)
+library(maptools)
+library(mapdata)
+library(ggplot2)
+library(plyr)
+library(grid)
+library(scatterpie)</code></pre>
+</div>
+<div id="step-2" class="section level1">
+<h1>Step 2</h1>
+<p>Load all the mapping data you will need eg. the EEZs you want and the data to be plotted.</p>
+<pre class="r"><code>all_states &lt;- map_data(&quot;world2Hires&quot;) # if you want to go above 180 use world2Hires else worldHires
+
+#eez overlay
+eez        &lt;- read.table(&quot;EZNEW2.txt&quot;, sep=&quot; &quot;, header=F, skip=0) #All regions
+eez_pna  &lt;- read.csv(&quot;pna_eez.csv&quot;) #PNA regions
+
+point_data&lt;-read.csv(&quot;point_dat.csv&quot;) # the data for the points</code></pre>
+</div>
+<div id="step-3" class="section level1">
+<h1>Step 3</h1>
+<p>Define the colours for the background and then load all the states (countries) you want to appear in the plot.</p>
+<pre class="r"><code>#different made up colours for the sea
+grecol    &lt;- rgb(red=0,green=100, blue=0, alpha=40, maxColorValue=255) #green colour
+blucol    &lt;- rgb(red=60,green=200, blue=175, alpha=70, maxColorValue=255)
+
+#sort(unique(all_states$region)) # to list the states you will need this if you want to add countries to your map
+
+# All states for the map.
+states     &lt;- subset(all_states, region %in% 
+                       c(&quot;American Samoa&quot;, &quot;Australia&quot;, &quot;Canada&quot;,&quot;China&quot;,&quot;Cook Islands&quot;,&quot;Fiji&quot;, &quot;French Polynesia&quot;, 
+                         &quot;Guam&quot;, &quot;Hawaii&quot;, &quot;Indonesia&quot;,&quot;Japan&quot;,&quot;Kiribati&quot;, &quot;Marshall Islands&quot;, &quot;Mexico&quot;, &quot;Micronesia&quot;,
+                         &quot;Nauru&quot;, &quot;New Caledonia&quot;, &quot;New Zealand&quot;, &quot;South Korea&quot;,&quot;North Korea&quot; , &quot;Niue&quot;, 
+                         &quot;Northern Mariana Islands&quot;,&quot;Palau&quot;, 
+                         &quot;Papua New Guinea&quot;, &quot;Philippines&quot;, &quot;Samoa&quot;, &quot;Solomon Islands&quot;,&quot;Tokelau&quot;, &quot;Tonga&quot;, &quot;Tuvalu&quot;, 
+                         &quot;USA&quot;, &quot;USSR&quot;, &quot;Vanuatu&quot;,&quot;Panama&quot;,&quot;Mongolia&quot; , &quot;Chile&quot;,&quot;Argentina&quot;, &quot;New Caledonia&quot;,&quot;Belize&quot;,
+                         &quot;Nicaragua&quot;,&quot;Ecuador&quot;,&quot;Honduras&quot;,&quot;Costa Rica&quot;,&quot;Colombia&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, 
+                         &quot;Peru&quot;, &quot;Guatemala&quot;,&quot;Venezuela&quot;,&quot;Bolivia&quot;,&quot;Paraguay&quot; ))</code></pre>
+</div>
+<div id="step-4" class="section level1">
+<h1>Step 4</h1>
+<p>Load the co-ordinates for the regional boundaries and make the labels.</p>
+<pre class="r"><code># add the region co-ordinates for the SP albacore assessment 
+b.x_1 &lt;- c(140,140,170,170,140)
+b.y_1 &lt;- c(-10,  0,  0,-10,-10)
+b.x_2&lt;- c(140,140,170,170,140)
+b.y_2&lt;- c(-25,-10,-10,-25,-25)
+b.x_3&lt;- c(140,140,170,170,140)
+b.y_3&lt;- c(-50,-25,-25,-50,-50)
+b.x_4&lt;- c(170,170,210,210,170)
+b.y_4&lt;- c(-10,  0,  0,-10, -10)
+b.x_5&lt;- c(170,170,210,210,170)
+b.y_5&lt;- c(-25,-10,-10,-25,-25)
+b.x_6&lt;- c(170,170,210,210,170)
+b.y_6&lt;- c(-50,-25,-25,-50,-50)
+b.x_7&lt;- c(210,210,230,230,210)
+b.y_7&lt;- c(-25, -5, -5,-25,-25)
+b.x_8&lt;- c(210,210,230,230,210)
+b.y_8&lt;- c(-50,-25,-25,-50,-50)
+
+# region labels
+reg_lab&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;) # labels
+reg_labx&lt;-c(155,155,155,190,190,190,220,220) # x axis co-ordinates
+reg_laby&lt;-c( -5,-18,-35, -5,-18,-35,-15,-35) # y axis co-ordinates</code></pre>
+</div>
+<div id="step-5" class="section level1">
+<h1>Step 5</h1>
+<p>Now you are ready to start plotting.</p>
+<pre class="r"><code># make the map this is compiled like a ggplot graph but it puts it together as a series of layers
+p          &lt;- ggplot() +
+  # add in the polygons (the shape of the eezs)
+  # note aes is the long (x) and lat (y) coordinates 
+  # note add the eezs first then the countries over them
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), colour=&quot;white&quot;, fill=grecol) + # All eezs
+  geom_polygon(data=eez_pna, aes(eez_pna[,1], eez_pna[,2]), colour=&quot;white&quot;, fill=&quot;blue&quot;) + # PNA eezs
+  geom_polygon(data=states, aes(x=long, y=lat, group = group),colour =&quot;white&quot;,  fill=&quot;grey10&quot; ) + # Add the countries
+  
+  # Add in the region boundaries
+  geom_polygon(aes(x=b.x_1, y=b.y_1), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  geom_polygon(aes(x=b.x_2, y=b.y_2), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  geom_polygon(aes(x=b.x_3, y=b.y_3), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  geom_polygon(aes(x=b.x_4, y=b.y_4), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  geom_polygon(aes(x=b.x_5, y=b.y_5), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  geom_polygon(aes(x=b.x_6, y=b.y_6), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  geom_polygon(aes(x=b.x_7, y=b.y_7), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  geom_polygon(aes(x=b.x_8, y=b.y_8), color=&quot;grey60&quot;, size=1.5, fill=NA) +
+  
+   # Add points (proportion from own region)
+  geom_point(aes(x = point_data$lat, y = point_data$long), color=&quot;red&quot;, size=point_data$val, alpha=0.5)+
+  
+  # region labels
+  annotate(&quot;text&quot;, label = reg_lab, x = reg_labx, y = reg_laby, size = 6, colour = &quot;blue&quot;)+ # add in the text you want
+  
+  coord_cartesian(xlim =c(130,235),ylim=c(-55,40)) + #sets data limits on x and y
+  theme(panel.background = element_rect(fill=blucol), 
+        plot.title = element_text(size = 20),
+        axis.text.x = element_text(vjust =1, size = 14, colour = &quot;black&quot;),
+        axis.text.y = element_text(hjust =1, size = 14,  colour = &quot;black&quot;),
+        axis.title.x = element_text(size=14),
+        axis.title.y = element_text(size=14,angle=90)) +  
+  xlab(&#39;long&#39;) + ylab(&#39;lat&#39;) 
+
+p</code></pre>
+<p><img src="ggplot_maps_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#savePlot(&quot;test_map&quot;, type=&quot;png&quot;)</code></pre>
+</div>
+<div id="next-we-will-plot-some-pie-charts-on-a-map" class="section level1">
+<h1>Next we will plot some pie charts on a map</h1>
+<p>As an example we will show the level of catch and the catch proportions averaged over the last 10 years for some PNA mambers longline fisheries</p>
+<pre class="r"><code>library(survival)
+library(maps)
+library(maptools)
+library(mapdata)
+library(ggplot2)
+library(plyr)
+library(grid)
+library(scatterpie)
+
+all_states &lt;- map_data(&quot;world2Hires&quot;) # if you want to go above 180 use world2Hires else worldHires
+
+# To get the center of a country for plotting 
+centres &lt;- ddply(all_states,.(region),summarize,long=mean(long),lat=mean(lat))
+head(centres)</code></pre>
+<pre><code>##            region       long       lat
+## 1     Afghanistan  67.425235  34.60546
+## 2         Albania  19.968470  41.09875
+## 3         Algeria 128.222576  30.47505
+## 4  American Samoa 189.769659 -14.27013
+## 5 Andaman Islands  92.823019  12.50583
+## 6         Andorra   1.608749  42.55536</code></pre>
+<pre class="r"><code>#eez overlay
+eez        &lt;- read.table(&quot;EZNEW2.txt&quot;, sep=&quot; &quot;, header=F, skip=0) #All regions
+eez_pna  &lt;- read.csv(&quot;pna_eez.csv&quot;) #PNA regions
+
+# Data for plotting 
+pool_dat&lt;-read.csv(&quot;pool_dat.csv&quot;, header = TRUE) # the data for the points
+
+#different made up colours for the sea
+grecol    &lt;- rgb(red=0,green=100, blue=0, alpha=40, maxColorValue=255)    # green colour
+blucol    &lt;- rgb(red=60,green=200, blue=175, alpha=70, maxColorValue=255)
+
+#sort(unique(all_states$region)) # to list the states, you will need this if you want to add countries to your map
+
+# All states to be added to the map
+states     &lt;- subset(all_states, region %in% 
+                       c(&quot;American Samoa&quot;, &quot;Australia&quot;, &quot;Canada&quot;,&quot;China&quot;,&quot;Cook Islands&quot;,&quot;Fiji&quot;, &quot;French Polynesia&quot;, 
+                         &quot;Guam&quot;, &quot;Hawaii&quot;, &quot;Indonesia&quot;,&quot;Japan&quot;,&quot;Kiribati&quot;, &quot;Marshall Islands&quot;, &quot;Mexico&quot;, &quot;Micronesia&quot;,
+                         &quot;Nauru&quot;, &quot;New Caledonia&quot;, &quot;New Zealand&quot;, &quot;South Korea&quot;,&quot;North Korea&quot; , &quot;Niue&quot;, &quot;Northern Mariana Islands&quot;,&quot;Palau&quot;, 
+                         &quot;Papua New Guinea&quot;, &quot;Philippines&quot;, &quot;Samoa&quot;, &quot;Solomon Islands&quot;,&quot;Tokelau&quot;, &quot;Tonga&quot;, &quot;Tuvalu&quot;, 
+                         &quot;USA&quot;, &quot;USSR&quot;, &quot;Vanuatu&quot;,&quot;Panama&quot;,&quot;Mongolia&quot; , &quot;Chile&quot;,&quot;Argentina&quot;, &quot;New Caledonia&quot;,&quot;Belize&quot;,
+                         &quot;Nicaragua&quot;,&quot;Ecuador&quot;,&quot;Honduras&quot;,&quot;Costa Rica&quot;,&quot;Colombia&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, 
+                         &quot;Peru&quot;, &quot;Guatemala&quot;,&quot;Venezuela&quot;,&quot;Bolivia&quot;,&quot;Paraguay&quot; ))
+
+# First make the map basic map and allocate it to the object called p
+p  &lt;- ggplot() +
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), colour=&quot;white&quot;, fill=grecol) + # All eezs
+  geom_polygon(data=eez_pna, aes(eez_pna[,1], eez_pna[,2]), colour=&quot;white&quot;, fill=&quot;blue&quot;) + # PNA eezs
+  geom_polygon(data=states, aes(x=long, y=lat, group = group),colour =&quot;white&quot;,  fill=&quot;grey10&quot; ) + # Add the countries
+  
+  coord_cartesian(xlim =c(130,235),ylim=c(-55,40))+
+  
+  theme(panel.background = element_rect(fill=blucol), 
+        plot.title = element_text(size = 20),
+        axis.text.x = element_text(vjust =1, size = 14, colour = &quot;black&quot;),
+        axis.text.y = element_text(hjust =1, size = 14,  colour = &quot;black&quot;),
+        axis.title.x = element_text(size=14),
+        axis.title.y = element_text(size=14,angle=90)) +  
+  xlab(&#39;Long&#39;) + ylab(&#39;Lat&#39;)</code></pre>
+<p>You can check the map if you want to to make sure toyr base map is correct by typing p in the consol (as you have assigned the map to an object called “p”)</p>
+</div>
+<div id="next-you-will-add-the-pie-charts-as-layers-to-your-map" class="section level1">
+<h1>Next you will add the pie charts as layers to your map</h1>
+<p>Here we use some averaged data for 5 countries showing the average annual caych for the last 10 years and the species proportions of tuna in the longline catch.</p>
+<pre class="r"><code># Add in the pie charts 
+# if the pies are too big shrink the radius eg in this example I divide by 1500
+windows(20,16) 
+p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c(&quot;alb&quot;,&quot;bet&quot;,&quot;yft&quot;),  color=&quot;black&quot;, alpha=.8) + # This adds on the pie chart  cols is the columns used in the pie chart.
+    geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates</code></pre>
+<p><img src="ggplot_maps_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>#savePlot(&quot;pie_map&quot;, type=&quot;png&quot;)</code></pre>
+</div>
+<div id="changing-the-pie-chart-colours" class="section level1">
+<h1>Changing the pie chart colours</h1>
+<p>Use the scale_fill_manual and add that in as a new layer</p>
+<pre class="r"><code>windows(20,16) 
+p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c(&quot;alb&quot;,&quot;bet&quot;,&quot;yft&quot;),  color=&quot;black&quot;, alpha=.8) + 
+  scale_fill_manual(values = c(&quot;forestgreen&quot;, &quot;red&quot;, &quot;yellow&quot;))+ # To manually change the colours of the piechart
+  geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates</code></pre>
+<p><img src="ggplot_maps_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>#savePlot(&quot;pie_map_cols&quot;, type=&quot;png&quot;)</code></pre>
+</div>
+
+<p>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
