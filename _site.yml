@@ -1,12 +1,12 @@
 name: "my-website"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "R tutorials"
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: README.html
+    - text: "Data manipulation"
+      href: data-manip-intro.html
 output: 
   html_document:
     theme: cosmo

@@ -1,0 +1,27 @@
+---
+title: "Filtering introduction"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(dplyr)
+ce <- read.csv('toydata1.csv')
+```
+
+This is how we select the mean of the values above 75 in a vector:
+```{r}
+mean(ce$ALB.mt[ce$ALB.mt > 75])
+```
+
+This is how you can filter the rows of a data.frame the traditional way: 
+```{r}
+head(ce[ce$ALB.mt > 75, ]) # add the filtering vector within the first slot
+# before the comma
+```
+
+This is how you can filter the  rows of a data.frame with dplyr
+```{r}
+head(filter(ce, ALB.mt > 75))
+filter(ce, Month == 1) # shows the rows where Month is equal to 1
+```
+
