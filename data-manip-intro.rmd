@@ -5,7 +5,7 @@ output: html_document
 
 ```{r, echo=FALSE}
 library(dplyr)
-ce <- read.csv('toydata1.csv')
+ce <- read.csv('data/toydata1.csv')
 ```
 
 This is how we select the mean of the values above 75 in a vector:
