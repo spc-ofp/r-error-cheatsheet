@@ -1,0 +1,55 @@
+---
+  title: "Bug decoder for R beginners"
+---
+*Pssst:* R bug not here? Send the bug to Slack #rtvmworkshop, including ?rbug in your message so that we can search for it.  
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, highlight=TRUE, prompt=TRUE)
+```
+***
+### <font color="red"> Error: unexpected ')' in "some.object <- 2)"</font>  
+> **Explanation:** There is a parenthesis somewhere that is not matching. In the example above there is an extra closing parenthesis after the `2` without a sister open parenthesis.
+```{r eval=FALSE}
+some.object <- 2 # now this will work
+```
+
+***
+### <font color="red"> Error in obj1 + obj2 : non-numeric argument to binary operator </font>  
+> **Explanation:** Mathematical operations in R only work with numbers, is one of `obj1` or `obj2` a character?
+```{r eval=FALSE}
+obj1 <- 3
+obj2 <- "hi"
+obj1 + obj2 # bug!
+obj2 <- "3" # watch out, 3 is between quotation marks so interpreted as a character
+obj1 + obj2 # bug!
+obj2 <- 3
+obj1 + obj2 # no bug since both obj1 and obj2 are numbers now
+```
+
+***
+### <font color="red"> Error: object 'yourvar' not found</font>  
+>**Explanation:** The object 'yourvar' is not in the R environment. Did you assign it a value?
+```{r eval=FALSE}
+ls() # to view the objects currently in the R environment
+```
+```{r}
+yourvar <- 2 # assign the value 2 to yourvar
+yourvar # now print it
+yourvar * 2 # success
+```
+
+If it is the column of a dataframe, make sure you specify that with `mytunadf$yourvar`.  
+
+***  
+### <font color="red"> Error in file(file, "rt") : cannot open the connection In addition: Warning message: In file(file, "rt") : cannot open file 'file.txt': No such file or directory</font>  
+> **Explanation:** the file 'file.txt' is not in your current working directory.
+
+
+```{r eval=FALSE}
+# To see the current location of the working directory
+getwd()
+# To change the location of your working directory
+setwd("/my/new/working/directory") # specify path here, e.g. "C:/Projects/OFP-data" (note the "")
+# To see what files are in your current working directory
+list.files() # is file.txt here?
+```

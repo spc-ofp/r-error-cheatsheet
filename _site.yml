@@ -3,12 +3,14 @@ output_dir: "."
 navbar:
   title: "R tutorials"
   left:
+    - text: "Home"
+      href: index.html
     - text: "Data manipulation"
       href: data-manip-intro.html
     - text: "Mapping"
       href: ggplot_maps.html
     - text: "Bug help"
-      href: index.html      
+      href: bug.html      
 output: 
   html_document:
     theme: cosmo

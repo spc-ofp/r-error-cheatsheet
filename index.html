@@ -11,7 +11,7 @@
 
 
 
-<title>Bug decoder for R beginners</title>
+<title>Welcome</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -182,6 +182,12 @@ $(document).ready(function () {
 <li>
   <a href="data-manip-intro.html">Data manipulation</a>
 </li>
+<li>
+  <a href="ggplot_maps.html">Mapping</a>
+</li>
+<li>
+  <a href="bug.html">Bug help</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -194,61 +200,21 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Bug decoder for R beginners</h1>
+<h1 class="title toc-ignore">Welcome</h1>
 
 </div>
 
 
-<p><em>Pssst:</em> R bug not here? Send the bug to Slack #rtvmworkshop, including ?rbug in your message so that we can search for it.</p>
-<hr />
-<div id="error-unexpected-in-some.object---2" class="section level3">
-<h3><font color="red"> Error: unexpected ‘)’ in “some.object &lt;- 2)”</font></h3>
-<blockquote>
-<p><strong>Explanation:</strong> There is a parenthesis somewhere that is not matching. In the example above there is an extra closing parenthesis after the <code>2</code> without a sister open parenthesis.</p>
-</blockquote>
-<pre class="r"><code>&gt; some.object &lt;- 2 # now this will work</code></pre>
-<hr />
-</div>
-<div id="error-in-obj1-obj2-non-numeric-argument-to-binary-operator" class="section level3">
-<h3><font color="red"> Error in obj1 + obj2 : non-numeric argument to binary operator </font></h3>
-<blockquote>
-<p><strong>Explanation:</strong> Mathematical operations in R only work with numbers, is one of <code>obj1</code> or <code>obj2</code> a character?</p>
-</blockquote>
-<pre class="r"><code>&gt; obj1 &lt;- 3
-&gt; obj2 &lt;- &quot;hi&quot;
-&gt; obj1 + obj2 # bug!
-&gt; obj2 &lt;- &quot;3&quot; # watch out, 3 is between quotation marks so interpreted as a character
-&gt; obj1 + obj2 # bug!
-&gt; obj2 &lt;- 3
-&gt; obj1 + obj2 # no bug since both obj1 and obj2 are numbers now</code></pre>
-<hr />
-</div>
-<div id="error-object-yourvar-not-found" class="section level3">
-<h3><font color="red"> Error: object ‘yourvar’ not found</font></h3>
-<blockquote>
-<p><strong>Explanation:</strong> The object ‘yourvar’ is not in the R environment. Did you assign it a value?</p>
-</blockquote>
-<pre class="r"><code>&gt; ls() # to view the objects currently in the R environment</code></pre>
-<pre class="r"><code>&gt; yourvar &lt;- 2 # assign the value 2 to yourvar
-&gt; yourvar # now print it</code></pre>
-<pre><code>## [1] 2</code></pre>
-<pre class="r"><code>&gt; yourvar * 2 # success</code></pre>
-<pre><code>## [1] 4</code></pre>
-<p>If it is the column of a dataframe, make sure you specify that with <code>mytunadf$yourvar</code>.</p>
-<hr />
-</div>
-<div id="error-in-filefile-rt-cannot-open-the-connection-in-addition-warning-message-in-filefile-rt-cannot-open-file-file.txt-no-such-file-or-directory" class="section level3">
-<h3><font color="red"> Error in file(file, “rt”) : cannot open the connection In addition: Warning message: In file(file, “rt”) : cannot open file ‘file.txt’: No such file or directory</font></h3>
-<blockquote>
-<p><strong>Explanation:</strong> the file ‘file.txt’ is not in your current working directory.</p>
-</blockquote>
-<pre class="r"><code>&gt; # To see the current location of the working directory
-&gt; getwd()
-&gt; # To change the location of your working directory
-&gt; setwd(&quot;/my/new/working/directory&quot;) # specify path here, e.g. &quot;C:/Projects/OFP-data&quot; (note the &quot;&quot;)
-&gt; # To see what files are in your current working directory
-&gt; list.files() # is file.txt here?</code></pre>
-</div>
+<p>Hello!</p>
+<p>The tutorials we ran during the workshop are included here, let us know if you have any questions!</p>
+<p>You will need the datasets for these to work, find them here: …</p>
+<p>All the <code>.Rmd</code> files used are here: …</p>
+<p><strong>More resources to learn R:</strong></p>
+<ul>
+<li>A fun overview/refresher of the syntax: <a href="tryr.codeschool.com/">TryR Code school</a></li>
+<li>Two e-books: …</li>
+<li>Cheatsheets: …</li>
+</ul>
 
 <p>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>
 
