@@ -180,7 +180,7 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="intro.Rmd">Getting started</a>
+  <a href="intro.html">Getting started</a>
 </li>
 <li>
   <a href="data-manip-intro.html">Data manipulation</a>
@@ -229,130 +229,130 @@ $(document).ready(function () {
 <div id="step1" class="section level1">
 <h1>Step1</h1>
 <p>Load all the requited packages.</p>
-<pre class="r"><code>library(survival)
-library(maps)
-library(maptools)
-library(mapdata)
-library(ggplot2)
-library(plyr)
-library(grid)
-library(scatterpie)</code></pre>
+<pre class="r"><code>&gt; library(survival)
+&gt; library(maps)
+&gt; library(maptools)
+&gt; library(mapdata)
+&gt; library(ggplot2)
+&gt; library(plyr)
+&gt; library(grid)
+&gt; library(scatterpie)</code></pre>
 </div>
 <div id="step-2" class="section level1">
 <h1>Step 2</h1>
 <p>Load all the mapping data you will need eg. the EEZs you want and the data to be plotted.</p>
-<pre class="r"><code>all_states &lt;- map_data(&quot;world2Hires&quot;) # if you want to go above 180 use world2Hires else worldHires
-
-#eez overlay
-eez        &lt;- read.table(&quot;EZNEW2.txt&quot;, sep=&quot; &quot;, header=F, skip=0) #All regions
-eez_pna  &lt;- read.csv(&quot;pna_eez.csv&quot;) #PNA regions
-
-point_data&lt;-read.csv(&quot;point_dat.csv&quot;) # the data for the points</code></pre>
+<pre class="r"><code>&gt; all_states &lt;- map_data(&quot;world2Hires&quot;) # if you want to go above 180 use world2Hires else worldHires
+&gt; 
+&gt; #eez overlay
+&gt; eez        &lt;- read.table(&quot;EZNEW2.txt&quot;, sep=&quot; &quot;, header=F, skip=0) #All regions
+&gt; eez_pna  &lt;- read.csv(&quot;pna_eez.csv&quot;) #PNA regions
+&gt; 
+&gt; point_data&lt;-read.csv(&quot;point_dat.csv&quot;) # the data for the points</code></pre>
 </div>
 <div id="step-3" class="section level1">
 <h1>Step 3</h1>
 <p>Define the colours for the background and then load all the states (countries) you want to appear in the plot.</p>
-<pre class="r"><code>#different made up colours for the sea
-grecol    &lt;- rgb(red=0,green=100, blue=0, alpha=40, maxColorValue=255) #green colour
-blucol    &lt;- rgb(red=60,green=200, blue=175, alpha=70, maxColorValue=255)
-
-#sort(unique(all_states$region)) # to list the states you will need this if you want to add countries to your map
-
-# All states for the map.
-states     &lt;- subset(all_states, region %in% 
-                       c(&quot;American Samoa&quot;, &quot;Australia&quot;, &quot;Canada&quot;,&quot;China&quot;,&quot;Cook Islands&quot;,&quot;Fiji&quot;, &quot;French Polynesia&quot;, 
-                         &quot;Guam&quot;, &quot;Hawaii&quot;, &quot;Indonesia&quot;,&quot;Japan&quot;,&quot;Kiribati&quot;, &quot;Marshall Islands&quot;, &quot;Mexico&quot;, &quot;Micronesia&quot;,
-                         &quot;Nauru&quot;, &quot;New Caledonia&quot;, &quot;New Zealand&quot;, &quot;South Korea&quot;,&quot;North Korea&quot; , &quot;Niue&quot;, 
-                         &quot;Northern Mariana Islands&quot;,&quot;Palau&quot;, 
-                         &quot;Papua New Guinea&quot;, &quot;Philippines&quot;, &quot;Samoa&quot;, &quot;Solomon Islands&quot;,&quot;Tokelau&quot;, &quot;Tonga&quot;, &quot;Tuvalu&quot;, 
-                         &quot;USA&quot;, &quot;USSR&quot;, &quot;Vanuatu&quot;,&quot;Panama&quot;,&quot;Mongolia&quot; , &quot;Chile&quot;,&quot;Argentina&quot;, &quot;New Caledonia&quot;,&quot;Belize&quot;,
-                         &quot;Nicaragua&quot;,&quot;Ecuador&quot;,&quot;Honduras&quot;,&quot;Costa Rica&quot;,&quot;Colombia&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, 
-                         &quot;Peru&quot;, &quot;Guatemala&quot;,&quot;Venezuela&quot;,&quot;Bolivia&quot;,&quot;Paraguay&quot; ))</code></pre>
+<pre class="r"><code>&gt; #different made up colours for the sea
+&gt; grecol    &lt;- rgb(red=0,green=100, blue=0, alpha=40, maxColorValue=255) #green colour
+&gt; blucol    &lt;- rgb(red=60,green=200, blue=175, alpha=70, maxColorValue=255)
+&gt; 
+&gt; #sort(unique(all_states$region)) # to list the states you will need this if you want to add countries to your map
+&gt; 
+&gt; # All states for the map.
+&gt; states     &lt;- subset(all_states, region %in% 
++                        c(&quot;American Samoa&quot;, &quot;Australia&quot;, &quot;Canada&quot;,&quot;China&quot;,&quot;Cook Islands&quot;,&quot;Fiji&quot;, &quot;French Polynesia&quot;, 
++                          &quot;Guam&quot;, &quot;Hawaii&quot;, &quot;Indonesia&quot;,&quot;Japan&quot;,&quot;Kiribati&quot;, &quot;Marshall Islands&quot;, &quot;Mexico&quot;, &quot;Micronesia&quot;,
++                          &quot;Nauru&quot;, &quot;New Caledonia&quot;, &quot;New Zealand&quot;, &quot;South Korea&quot;,&quot;North Korea&quot; , &quot;Niue&quot;, 
++                          &quot;Northern Mariana Islands&quot;,&quot;Palau&quot;, 
++                          &quot;Papua New Guinea&quot;, &quot;Philippines&quot;, &quot;Samoa&quot;, &quot;Solomon Islands&quot;,&quot;Tokelau&quot;, &quot;Tonga&quot;, &quot;Tuvalu&quot;, 
++                          &quot;USA&quot;, &quot;USSR&quot;, &quot;Vanuatu&quot;,&quot;Panama&quot;,&quot;Mongolia&quot; , &quot;Chile&quot;,&quot;Argentina&quot;, &quot;New Caledonia&quot;,&quot;Belize&quot;,
++                          &quot;Nicaragua&quot;,&quot;Ecuador&quot;,&quot;Honduras&quot;,&quot;Costa Rica&quot;,&quot;Colombia&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, 
++                          &quot;Peru&quot;, &quot;Guatemala&quot;,&quot;Venezuela&quot;,&quot;Bolivia&quot;,&quot;Paraguay&quot; ))</code></pre>
 </div>
 <div id="step-4" class="section level1">
 <h1>Step 4</h1>
 <p>Load the co-ordinates for the regional boundaries and make the labels.</p>
-<pre class="r"><code># add the region co-ordinates for the SP albacore assessment 
-b.x_1 &lt;- c(140,140,170,170,140)
-b.y_1 &lt;- c(-10,  0,  0,-10,-10)
-b.x_2&lt;- c(140,140,170,170,140)
-b.y_2&lt;- c(-25,-10,-10,-25,-25)
-b.x_3&lt;- c(140,140,170,170,140)
-b.y_3&lt;- c(-50,-25,-25,-50,-50)
-b.x_4&lt;- c(170,170,210,210,170)
-b.y_4&lt;- c(-10,  0,  0,-10, -10)
-b.x_5&lt;- c(170,170,210,210,170)
-b.y_5&lt;- c(-25,-10,-10,-25,-25)
-b.x_6&lt;- c(170,170,210,210,170)
-b.y_6&lt;- c(-50,-25,-25,-50,-50)
-b.x_7&lt;- c(210,210,230,230,210)
-b.y_7&lt;- c(-25, -5, -5,-25,-25)
-b.x_8&lt;- c(210,210,230,230,210)
-b.y_8&lt;- c(-50,-25,-25,-50,-50)
-
-# region labels
-reg_lab&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;) # labels
-reg_labx&lt;-c(155,155,155,190,190,190,220,220) # x axis co-ordinates
-reg_laby&lt;-c( -5,-18,-35, -5,-18,-35,-15,-35) # y axis co-ordinates</code></pre>
+<pre class="r"><code>&gt; # add the region co-ordinates for the SP albacore assessment 
+&gt; b.x_1 &lt;- c(140,140,170,170,140)
+&gt; b.y_1 &lt;- c(-10,  0,  0,-10,-10)
+&gt; b.x_2&lt;- c(140,140,170,170,140)
+&gt; b.y_2&lt;- c(-25,-10,-10,-25,-25)
+&gt; b.x_3&lt;- c(140,140,170,170,140)
+&gt; b.y_3&lt;- c(-50,-25,-25,-50,-50)
+&gt; b.x_4&lt;- c(170,170,210,210,170)
+&gt; b.y_4&lt;- c(-10,  0,  0,-10, -10)
+&gt; b.x_5&lt;- c(170,170,210,210,170)
+&gt; b.y_5&lt;- c(-25,-10,-10,-25,-25)
+&gt; b.x_6&lt;- c(170,170,210,210,170)
+&gt; b.y_6&lt;- c(-50,-25,-25,-50,-50)
+&gt; b.x_7&lt;- c(210,210,230,230,210)
+&gt; b.y_7&lt;- c(-25, -5, -5,-25,-25)
+&gt; b.x_8&lt;- c(210,210,230,230,210)
+&gt; b.y_8&lt;- c(-50,-25,-25,-50,-50)
+&gt; 
+&gt; # region labels
+&gt; reg_lab&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;) # labels
+&gt; reg_labx&lt;-c(155,155,155,190,190,190,220,220) # x axis co-ordinates
+&gt; reg_laby&lt;-c( -5,-18,-35, -5,-18,-35,-15,-35) # y axis co-ordinates</code></pre>
 </div>
 <div id="step-5" class="section level1">
 <h1>Step 5</h1>
 <p>Now you are ready to start plotting.</p>
-<pre class="r"><code># make the map this is compiled like a ggplot graph but it puts it together as a series of layers
-p          &lt;- ggplot() +
-  # add in the polygons (the shape of the eezs)
-  # note aes is the long (x) and lat (y) coordinates 
-  # note add the eezs first then the countries over them
-  geom_polygon(data=eez, aes(eez[,1], eez[,2]), colour=&quot;white&quot;, fill=grecol) + # All eezs
-  geom_polygon(data=eez_pna, aes(eez_pna[,1], eez_pna[,2]), colour=&quot;white&quot;, fill=&quot;blue&quot;) + # PNA eezs
-  geom_polygon(data=states, aes(x=long, y=lat, group = group),colour =&quot;white&quot;,  fill=&quot;grey10&quot; ) + # Add the countries
-  
-  # Add in the region boundaries
-  geom_polygon(aes(x=b.x_1, y=b.y_1), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  geom_polygon(aes(x=b.x_2, y=b.y_2), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  geom_polygon(aes(x=b.x_3, y=b.y_3), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  geom_polygon(aes(x=b.x_4, y=b.y_4), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  geom_polygon(aes(x=b.x_5, y=b.y_5), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  geom_polygon(aes(x=b.x_6, y=b.y_6), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  geom_polygon(aes(x=b.x_7, y=b.y_7), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  geom_polygon(aes(x=b.x_8, y=b.y_8), color=&quot;grey60&quot;, size=1.5, fill=NA) +
-  
-   # Add points (proportion from own region)
-  geom_point(aes(x = point_data$lat, y = point_data$long), color=&quot;red&quot;, size=point_data$val, alpha=0.5)+
-  
-  # region labels
-  annotate(&quot;text&quot;, label = reg_lab, x = reg_labx, y = reg_laby, size = 6, colour = &quot;blue&quot;)+ # add in the text you want
-  
-  coord_cartesian(xlim =c(130,235),ylim=c(-55,40)) + #sets data limits on x and y
-  theme(panel.background = element_rect(fill=blucol), 
-        plot.title = element_text(size = 20),
-        axis.text.x = element_text(vjust =1, size = 14, colour = &quot;black&quot;),
-        axis.text.y = element_text(hjust =1, size = 14,  colour = &quot;black&quot;),
-        axis.title.x = element_text(size=14),
-        axis.title.y = element_text(size=14,angle=90)) +  
-  xlab(&#39;long&#39;) + ylab(&#39;lat&#39;) 
-
-p</code></pre>
+<pre class="r"><code>&gt; # make the map this is compiled like a ggplot graph but it puts it together as a series of layers
+&gt; p          &lt;- ggplot() +
++   # add in the polygons (the shape of the eezs)
++   # note aes is the long (x) and lat (y) coordinates 
++   # note add the eezs first then the countries over them
++   geom_polygon(data=eez, aes(eez[,1], eez[,2]), colour=&quot;white&quot;, fill=grecol) + # All eezs
++   geom_polygon(data=eez_pna, aes(eez_pna[,1], eez_pna[,2]), colour=&quot;white&quot;, fill=&quot;blue&quot;) + # PNA eezs
++   geom_polygon(data=states, aes(x=long, y=lat, group = group),colour =&quot;white&quot;,  fill=&quot;grey10&quot; ) + # Add the countries
++   
++   # Add in the region boundaries
++   geom_polygon(aes(x=b.x_1, y=b.y_1), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   geom_polygon(aes(x=b.x_2, y=b.y_2), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   geom_polygon(aes(x=b.x_3, y=b.y_3), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   geom_polygon(aes(x=b.x_4, y=b.y_4), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   geom_polygon(aes(x=b.x_5, y=b.y_5), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   geom_polygon(aes(x=b.x_6, y=b.y_6), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   geom_polygon(aes(x=b.x_7, y=b.y_7), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   geom_polygon(aes(x=b.x_8, y=b.y_8), color=&quot;grey60&quot;, size=1.5, fill=NA) +
++   
++    # Add points (proportion from own region)
++   geom_point(aes(x = point_data$lat, y = point_data$long), color=&quot;red&quot;, size=point_data$val, alpha=0.5)+
++   
++   # region labels
++   annotate(&quot;text&quot;, label = reg_lab, x = reg_labx, y = reg_laby, size = 6, colour = &quot;blue&quot;)+ # add in the text you want
++   
++   coord_cartesian(xlim =c(130,235),ylim=c(-55,40)) + #sets data limits on x and y
++   theme(panel.background = element_rect(fill=blucol), 
++         plot.title = element_text(size = 20),
++         axis.text.x = element_text(vjust =1, size = 14, colour = &quot;black&quot;),
++         axis.text.y = element_text(hjust =1, size = 14,  colour = &quot;black&quot;),
++         axis.title.x = element_text(size=14),
++         axis.title.y = element_text(size=14,angle=90)) +  
++   xlab(&#39;long&#39;) + ylab(&#39;lat&#39;) 
+&gt; 
+&gt; p</code></pre>
 <p><img src="ggplot_maps_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>#savePlot(&quot;test_map&quot;, type=&quot;png&quot;)</code></pre>
+<pre class="r"><code>&gt; #savePlot(&quot;test_map&quot;, type=&quot;png&quot;)</code></pre>
 </div>
 <div id="next-we-will-plot-some-pie-charts-on-a-map" class="section level1">
 <h1>Next we will plot some pie charts on a map</h1>
 <p>As an example we will show the level of catch and the catch proportions averaged over the last 10 years for some PNA mambers longline fisheries</p>
-<pre class="r"><code>library(survival)
-library(maps)
-library(maptools)
-library(mapdata)
-library(ggplot2)
-library(plyr)
-library(grid)
-library(scatterpie)
-
-all_states &lt;- map_data(&quot;world2Hires&quot;) # if you want to go above 180 use world2Hires else worldHires
-
-# To get the center of a country for plotting 
-centres &lt;- ddply(all_states,.(region),summarize,long=mean(long),lat=mean(lat))
-head(centres)</code></pre>
+<pre class="r"><code>&gt; library(survival)
+&gt; library(maps)
+&gt; library(maptools)
+&gt; library(mapdata)
+&gt; library(ggplot2)
+&gt; library(plyr)
+&gt; library(grid)
+&gt; library(scatterpie)
+&gt; 
+&gt; all_states &lt;- map_data(&quot;world2Hires&quot;) # if you want to go above 180 use world2Hires else worldHires
+&gt; 
+&gt; # To get the center of a country for plotting 
+&gt; centres &lt;- ddply(all_states,.(region),summarize,long=mean(long),lat=mean(lat))
+&gt; head(centres)</code></pre>
 <pre><code>##            region       long       lat
 ## 1     Afghanistan  67.425235  34.60546
 ## 2         Albania  19.968470  41.09875
@@ -360,66 +360,66 @@ head(centres)</code></pre>
 ## 4  American Samoa 189.769659 -14.27013
 ## 5 Andaman Islands  92.823019  12.50583
 ## 6         Andorra   1.608749  42.55536</code></pre>
-<pre class="r"><code>#eez overlay
-eez        &lt;- read.table(&quot;EZNEW2.txt&quot;, sep=&quot; &quot;, header=F, skip=0) #All regions
-eez_pna  &lt;- read.csv(&quot;pna_eez.csv&quot;) #PNA regions
-
-# Data for plotting 
-pool_dat&lt;-read.csv(&quot;pool_dat.csv&quot;, header = TRUE) # the data for the points
-
-#different made up colours for the sea
-grecol    &lt;- rgb(red=0,green=100, blue=0, alpha=40, maxColorValue=255)    # green colour
-blucol    &lt;- rgb(red=60,green=200, blue=175, alpha=70, maxColorValue=255)
-
-#sort(unique(all_states$region)) # to list the states, you will need this if you want to add countries to your map
-
-# All states to be added to the map
-states     &lt;- subset(all_states, region %in% 
-                       c(&quot;American Samoa&quot;, &quot;Australia&quot;, &quot;Canada&quot;,&quot;China&quot;,&quot;Cook Islands&quot;,&quot;Fiji&quot;, &quot;French Polynesia&quot;, 
-                         &quot;Guam&quot;, &quot;Hawaii&quot;, &quot;Indonesia&quot;,&quot;Japan&quot;,&quot;Kiribati&quot;, &quot;Marshall Islands&quot;, &quot;Mexico&quot;, &quot;Micronesia&quot;,
-                         &quot;Nauru&quot;, &quot;New Caledonia&quot;, &quot;New Zealand&quot;, &quot;South Korea&quot;,&quot;North Korea&quot; , &quot;Niue&quot;, &quot;Northern Mariana Islands&quot;,&quot;Palau&quot;, 
-                         &quot;Papua New Guinea&quot;, &quot;Philippines&quot;, &quot;Samoa&quot;, &quot;Solomon Islands&quot;,&quot;Tokelau&quot;, &quot;Tonga&quot;, &quot;Tuvalu&quot;, 
-                         &quot;USA&quot;, &quot;USSR&quot;, &quot;Vanuatu&quot;,&quot;Panama&quot;,&quot;Mongolia&quot; , &quot;Chile&quot;,&quot;Argentina&quot;, &quot;New Caledonia&quot;,&quot;Belize&quot;,
-                         &quot;Nicaragua&quot;,&quot;Ecuador&quot;,&quot;Honduras&quot;,&quot;Costa Rica&quot;,&quot;Colombia&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, 
-                         &quot;Peru&quot;, &quot;Guatemala&quot;,&quot;Venezuela&quot;,&quot;Bolivia&quot;,&quot;Paraguay&quot; ))
-
-# First make the map basic map and allocate it to the object called p
-p  &lt;- ggplot() +
-  geom_polygon(data=eez, aes(eez[,1], eez[,2]), colour=&quot;white&quot;, fill=grecol) + # All eezs
-  geom_polygon(data=eez_pna, aes(eez_pna[,1], eez_pna[,2]), colour=&quot;white&quot;, fill=&quot;blue&quot;) + # PNA eezs
-  geom_polygon(data=states, aes(x=long, y=lat, group = group),colour =&quot;white&quot;,  fill=&quot;grey10&quot; ) + # Add the countries
-  
-  coord_cartesian(xlim =c(130,235),ylim=c(-55,40))+
-  
-  theme(panel.background = element_rect(fill=blucol), 
-        plot.title = element_text(size = 20),
-        axis.text.x = element_text(vjust =1, size = 14, colour = &quot;black&quot;),
-        axis.text.y = element_text(hjust =1, size = 14,  colour = &quot;black&quot;),
-        axis.title.x = element_text(size=14),
-        axis.title.y = element_text(size=14,angle=90)) +  
-  xlab(&#39;Long&#39;) + ylab(&#39;Lat&#39;)</code></pre>
+<pre class="r"><code>&gt; #eez overlay
+&gt; eez        &lt;- read.table(&quot;EZNEW2.txt&quot;, sep=&quot; &quot;, header=F, skip=0) #All regions
+&gt; eez_pna  &lt;- read.csv(&quot;pna_eez.csv&quot;) #PNA regions
+&gt; 
+&gt; # Data for plotting 
+&gt; pool_dat&lt;-read.csv(&quot;pool_dat.csv&quot;, header = TRUE) # the data for the points
+&gt; 
+&gt; #different made up colours for the sea
+&gt; grecol    &lt;- rgb(red=0,green=100, blue=0, alpha=40, maxColorValue=255)    # green colour
+&gt; blucol    &lt;- rgb(red=60,green=200, blue=175, alpha=70, maxColorValue=255)
+&gt; 
+&gt; #sort(unique(all_states$region)) # to list the states, you will need this if you want to add countries to your map
+&gt; 
+&gt; # All states to be added to the map
+&gt; states     &lt;- subset(all_states, region %in% 
++                        c(&quot;American Samoa&quot;, &quot;Australia&quot;, &quot;Canada&quot;,&quot;China&quot;,&quot;Cook Islands&quot;,&quot;Fiji&quot;, &quot;French Polynesia&quot;, 
++                          &quot;Guam&quot;, &quot;Hawaii&quot;, &quot;Indonesia&quot;,&quot;Japan&quot;,&quot;Kiribati&quot;, &quot;Marshall Islands&quot;, &quot;Mexico&quot;, &quot;Micronesia&quot;,
++                          &quot;Nauru&quot;, &quot;New Caledonia&quot;, &quot;New Zealand&quot;, &quot;South Korea&quot;,&quot;North Korea&quot; , &quot;Niue&quot;, &quot;Northern Mariana Islands&quot;,&quot;Palau&quot;, 
++                          &quot;Papua New Guinea&quot;, &quot;Philippines&quot;, &quot;Samoa&quot;, &quot;Solomon Islands&quot;,&quot;Tokelau&quot;, &quot;Tonga&quot;, &quot;Tuvalu&quot;, 
++                          &quot;USA&quot;, &quot;USSR&quot;, &quot;Vanuatu&quot;,&quot;Panama&quot;,&quot;Mongolia&quot; , &quot;Chile&quot;,&quot;Argentina&quot;, &quot;New Caledonia&quot;,&quot;Belize&quot;,
++                          &quot;Nicaragua&quot;,&quot;Ecuador&quot;,&quot;Honduras&quot;,&quot;Costa Rica&quot;,&quot;Colombia&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, 
++                          &quot;Peru&quot;, &quot;Guatemala&quot;,&quot;Venezuela&quot;,&quot;Bolivia&quot;,&quot;Paraguay&quot; ))
+&gt; 
+&gt; # First make the map basic map and allocate it to the object called p
+&gt; p  &lt;- ggplot() +
++   geom_polygon(data=eez, aes(eez[,1], eez[,2]), colour=&quot;white&quot;, fill=grecol) + # All eezs
++   geom_polygon(data=eez_pna, aes(eez_pna[,1], eez_pna[,2]), colour=&quot;white&quot;, fill=&quot;blue&quot;) + # PNA eezs
++   geom_polygon(data=states, aes(x=long, y=lat, group = group),colour =&quot;white&quot;,  fill=&quot;grey10&quot; ) + # Add the countries
++   
++   coord_cartesian(xlim =c(130,235),ylim=c(-55,40))+
++   
++   theme(panel.background = element_rect(fill=blucol), 
++         plot.title = element_text(size = 20),
++         axis.text.x = element_text(vjust =1, size = 14, colour = &quot;black&quot;),
++         axis.text.y = element_text(hjust =1, size = 14,  colour = &quot;black&quot;),
++         axis.title.x = element_text(size=14),
++         axis.title.y = element_text(size=14,angle=90)) +  
++   xlab(&#39;Long&#39;) + ylab(&#39;Lat&#39;)</code></pre>
 <p>You can check the map if you want to to make sure toyr base map is correct by typing p in the consol (as you have assigned the map to an object called “p”)</p>
 </div>
 <div id="next-you-will-add-the-pie-charts-as-layers-to-your-map" class="section level1">
 <h1>Next you will add the pie charts as layers to your map</h1>
 <p>Here we use some averaged data for 5 countries showing the average annual caych for the last 10 years and the species proportions of tuna in the longline catch.</p>
-<pre class="r"><code># Add in the pie charts 
-# if the pies are too big shrink the radius eg in this example I divide by 1500
-windows(20,16) 
-p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c(&quot;alb&quot;,&quot;bet&quot;,&quot;yft&quot;),  color=&quot;black&quot;, alpha=.8) + # This adds on the pie chart  cols is the columns used in the pie chart.
-    geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates</code></pre>
+<pre class="r"><code>&gt; # Add in the pie charts 
+&gt; # if the pies are too big shrink the radius eg in this example I divide by 1500
+&gt; windows(20,16) 
+&gt; p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c(&quot;alb&quot;,&quot;bet&quot;,&quot;yft&quot;),  color=&quot;black&quot;, alpha=.8) + # This adds on the pie chart  cols is the columns used in the pie chart.
++     geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates</code></pre>
 <p><img src="ggplot_maps_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>#savePlot(&quot;pie_map&quot;, type=&quot;png&quot;)</code></pre>
+<pre class="r"><code>&gt; #savePlot(&quot;pie_map&quot;, type=&quot;png&quot;)</code></pre>
 </div>
 <div id="changing-the-pie-chart-colours" class="section level1">
 <h1>Changing the pie chart colours</h1>
 <p>Use the scale_fill_manual and add that in as a new layer</p>
-<pre class="r"><code>windows(20,16) 
-p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c(&quot;alb&quot;,&quot;bet&quot;,&quot;yft&quot;),  color=&quot;black&quot;, alpha=.8) + 
-  scale_fill_manual(values = c(&quot;forestgreen&quot;, &quot;red&quot;, &quot;yellow&quot;))+ # To manually change the colours of the piechart
-  geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates</code></pre>
+<pre class="r"><code>&gt; windows(20,16) 
+&gt; p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c(&quot;alb&quot;,&quot;bet&quot;,&quot;yft&quot;),  color=&quot;black&quot;, alpha=.8) + 
++   scale_fill_manual(values = c(&quot;forestgreen&quot;, &quot;red&quot;, &quot;yellow&quot;))+ # To manually change the colours of the piechart
++   geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates</code></pre>
 <p><img src="ggplot_maps_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>#savePlot(&quot;pie_map_cols&quot;, type=&quot;png&quot;)</code></pre>
+<pre class="r"><code>&gt; #savePlot(&quot;pie_map_cols&quot;, type=&quot;png&quot;)</code></pre>
 </div>
 
 <p>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>

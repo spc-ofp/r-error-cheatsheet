@@ -6,7 +6,7 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Getting started"
-      href: intro.Rmd
+      href: intro.html
     - text: "Data manipulation"
       href: data-manip-intro.html
     - text: "Mapping"

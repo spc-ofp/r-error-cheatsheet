@@ -13,7 +13,7 @@ Hello!
 
 The tutorials we ran during the workshop are included here, let us know if you have any questions!
 
-You will need the datasets for these to work, find them [here](https://github.com/spc-ofp/r-error-cheatsheet/tree/master/www).
+You will need the datasets for these to work, find them [here](https://github.com/spc-ofp/r-error-cheatsheet/tree/master/data).
 
 And all the `.Rmd` files used are [here](https://github.com/spc-ofp/r-error-cheatsheet). 
 

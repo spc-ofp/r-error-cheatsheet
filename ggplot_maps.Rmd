@@ -5,7 +5,9 @@ output:
     toc: true
 
 ---
-
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, highlight=TRUE, prompt=TRUE, cache=TRUE)
+```
 # Introduction
 ggplot is a useful way to create maps and add layers to the map. 
 
