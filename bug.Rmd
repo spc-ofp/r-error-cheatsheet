@@ -1,7 +1,7 @@
 ---
   title: "Bug decoder for R beginners"
   output: 
-    html_document: 
+    html_document:
       toc: true
 ---
 *Pssst:* R bug not here? Send the bug to Slack #rtvmworkshop, including ?rbug in your message so that we can search for it.  
