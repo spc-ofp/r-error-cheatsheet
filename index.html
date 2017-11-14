@@ -180,6 +180,9 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li>
+  <a href="intro.Rmd">Getting started</a>
+</li>
+<li>
   <a href="data-manip-intro.html">Data manipulation</a>
 </li>
 <li>
@@ -205,10 +208,16 @@ $(document).ready(function () {
 </div>
 
 
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"spc-logo.png\" style=\"float: right;width: 150px;\"/>')
+   });
+</script>
 <p>Hello!</p>
 <p>The tutorials we ran during the workshop are included here, let us know if you have any questions!</p>
-<p>You will need the datasets for these to work, find them here: …</p>
-<p>All the <code>.Rmd</code> files used are here: …</p>
+<p>You will need the datasets for these to work, find them <a href="https://github.com/spc-ofp/r-error-cheatsheet/tree/master/www">here</a>.</p>
+<p>And all the <code>.Rmd</code> files used are <a href="https://github.com/spc-ofp/r-error-cheatsheet">here</a>.</p>
 <p><strong>More resources to learn R:</strong></p>
 <ul>
 <li>A fun overview/refresher of the syntax: <a href="tryr.codeschool.com/">TryR Code school</a></li>

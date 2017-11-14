@@ -2,13 +2,20 @@
 title: "Welcome"
 ---
 
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"spc-logo.png\" style=\"float: right;width: 150px;\"/>')
+   });
+</script>
+
 Hello! 
 
 The tutorials we ran during the workshop are included here, let us know if you have any questions!
 
-You will need the datasets for these to work, find them here: ... 
+You will need the datasets for these to work, find them [here](https://github.com/spc-ofp/r-error-cheatsheet/tree/master/www).
 
-All the `.Rmd` files used are here: ... 
+And all the `.Rmd` files used are [here](https://github.com/spc-ofp/r-error-cheatsheet). 
 
 **More resources to learn R:**
 

@@ -1,0 +1,198 @@
+---
+title: "Getting started"
+---
+
+```{r setup, eval=FALSE}
+#############################################################################################
+###############                      Introduction to R                        ###############
+###############                        Steve Brouwer                          ###############
+###############                          02/11/2017                           ###############
+#############################################################################################
+
+# Some basic things in R
+# Firstly you will need to set your working directory. This is a place where R will go to look for  to import 
+# any data you want and where R will store any files you make like figures and tables. 
+setwd("C:/Users/YOURNAME/Documents/R_workshop/workshop_material/exercises/introduction_to_r")
+# or
+setwd("C:\\Users\\YOURNAME\\Documents\\R_workshop\\workshop_material\\exercises\\introduction_to_r")
+# to check that you are in the right directort type in the console 
+getwd()
+
+# Storing information 
+# To store the number 10 for later use:
+x<-10
+# or 
+y=15
+x
+y
+# These are called objects and you can then use these in calculations 
+x+y
+# and you can store that too
+z<-x+y
+# You can make a list of these objects this is called a vector
+a<-c(x,y,z)
+a
+# and calculate things from that list
+a*2
+# or
+a/z
+
+## NB named objects are case sensitive
+A
+## The names you use cannot contain spaces and cannot be entirely numeric
+a space<-10
+10<-11
+# but
+a_with.space<-10
+X10<-11
+# 
+# You can view all your objects using 
+ls()
+# and you can remove an object 
+rm(a)
+
+# You can read in an external data set from a txt file or from excel, but you cant read in a .xls file only a .csv 
+# so first convert your file to a .csv then read it into R
+# this will import the data as a data frame
+catch_effort<-read.csv(file="sample_data.csv", header =TRUE)
+catch_effort
+
+# note the first column name has changes to catch.year to remove the space
+head(catch_effort)
+tail(catch_effort)
+catch_effort$catch.year
+
+class(catch_effort)
+# r reads data frames by row then column so to see a specific number eg the catch of albacore in 2000
+# [] use for data frame referencing 
+# () used for functions
+catch_effort[1,3] # [row, column]
+#or
+catch_effort[1,"alb"] 
+
+# To change the column names
+colnames(catch_effort)<-c("yy","hook", "ALB", "BET","YFT") 
+
+# To make a new column of data with the catch totals you can use thr row sum function (rowSums)
+# you need to assign this to a column in the data frame 
+catch_effort$total<-rowSums(catch_effort)
+
+# is this correct? 
+1162 + 2959 + 1993 # in 2000
+# 6114 but the total is 20650 more than that
+# so we need to leave out the first twp columnc
+catch_effort$total<-rowSums(catch_effort[c(3:5)]) 
+
+head(catch_effort)
+
+#You can also sum the columns you want
+colSums(catch_effort[c(-1:-2)])
+
+# calculate the total cpue
+catch_effort$cpue<-catch_effort$total/catch_effort$hook
+
+# How would you calculate the average cpue? 
+
+# save the new data to something you can use again
+write.csv(catch_effort,file = "catch_cpue.csv" ) # look at the csv file in excel there are row numbers in the file which can be annoying
+# these can be excluded:
+write.csv(catch_effort,file = "catch_cpue.csv", row.names = FALSE )
+# You can also save the data you have created to an R data file
+save(catch_effort, x, y, file = "catch.RData")
+# or 
+save.image(file = "catch_all_data.RData") # will save all active objects
+# these are handy things to have as it means that you can access all you objects withour re-running all the code
+# you can load them back into the R environmant using load eg:
+load("catch.RData")
+###########################################################
+#####      Plot some stuff      
+###########################################################
+plot(catch_effort$yy, catch_effort$ALB)
+?plot
+#How can we make it nicer? 
+plot(catch_effort$yy, catch_effort$ALB, las=1)
+
+plot(catch_effort$yy, catch_effort$ALB, las=1, xlab="Years", ylab="Catch (t)")
+
+plot(catch_effort$yy, catch_effort$ALB, las=1, xlab="Years", ylab="Catch (t)", ylim=c(0,3500))
+lines(catch_effort$yy, catch_effort$YFT)
+lines(catch_effort$yy, catch_effort$BET, col="red")
+savePlot(filename = "first_plot", type="png")
+
+# Bar plots 
+
+barplot(t(catch_effort[,c("ALB", "BET", "YFT")]), names.arg= catch_effort$yy, beside = FALSE)
+## fix the y-axis so that the bars don't go above it and the labels look good
+barplot(t(catch_effort[,c("ALB", "BET", "YFT")]), names.arg= catch_effort$yy, beside = FALSE, 
+        ylim=c(0,7000), las=1, col=c("forestgreen","firebrick","yellow" ))
+savePlot(filename = "first_bar_plot", type="png")
+# what happens of you change besides= TRUE
+
+# Box plots
+load("cpue_data.RData") # load the data file 
+#load("catch.RData") 
+
+boxplot(cpue ~ mm, data= cpue_dat, subset= sp_code =="FAL", las=1, col="red", ylab="CPUE kg/100 hooks", 
+        main="Silky shark", cex.axis=0.8, xlab = "Years", ylim=c(0,200))
+
+savePlot(filename = "box_plot1", type="png")
+
+boxplot(cpue ~ yy, data= cpue_dat, subset= sp_code =="ALB", las=1, col="forestgreen", ylab="CPUE kg/100 hooks", 
+        main="Albacore", cex.axis=0.8, xlab = "Years", ylim=c(0,100))
+
+savePlot(filename = "box_plot2", type="png")
+####################################################################
+####################################################################
+
+# Exercises 
+# 1 Make all of the series from your first plot lines
+plot(catch_effort$yy, catch_effort$ALB, las=1, xlab="Years", ylab="Catch (t)", ylim=c(0,3500))
+lines(catch_effort$yy, catch_effort$YFT)
+lines(catch_effort$yy, catch_effort$BET, col="red")
+
+savePlot(filename = "first_plot_ex1", type="png")
+
+# 2 Make the same plot above but make the lines thicker and color the lines as follows:
+# albacore - forestgreen
+# bigeye - firebrick
+# yellowfin - gold2
+# add a legend in the top right corner 
+?legend
+
+savePlot(filename = "first_plot_ex2", type="png")
+
+# 3 remove the box around the legend
+
+
+savePlot(filename = "first_plot_ex3", type="png")
+
+# 4 change the lines in the plot and the legend to be lines showing the data points as filled dots 
+# in the plot and legend
+
+
+savePlot(filename = "first_plot_ex4", type="png")
+
+# 5 add cpue as a new line on a secondary axis as a line with the data points as filled triangles
+# hint you will need to make more space around the plot and create a new plot to overaly your original
+# use par(new=TRUE)
+
+
+savePlot(filename = "first_plot_ex5", type="png")
+
+# 6 Use the bar plot code above and add in a legend, and a heading "Catch of the three main tuna", 
+# and x and y - axis labels 
+ 
+savePlot(filename = "first_plot_ex6", type="png")
+
+# 7 use the plot call above to make individual plots for bigeye, yellowfin, albacore and your barplot 
+# then plot each plot in its own panel with a heading on a single page  
+
+savePlot(filename = "first_plot_ex7", type="png")
+
+# 8 Using the cpue_dat file make a box plot showing the annual cpue of yellowfin tuna by year
+
+
+savePlot(filename = "first_plot_ex8", type="png")
+
+
+```
