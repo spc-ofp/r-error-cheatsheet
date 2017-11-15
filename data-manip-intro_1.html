@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Introduction to summarising and manipulating data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="bootstrap.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Getting started<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">R basics</a></li>
+            <li><a href="#">Data import</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Data import from Dorado</a></li>
+          </ul>
+        </li>
+       <li><a href="data-manip-intro_1.html">Data manipulation</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plots<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Base plots</a></li>
+            <li><a href="#">ggplot</a></li>
+            <li><a href="#">ggplot + Google maps</a></li>
+          </ul>
+        </li>  
+       <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Maps <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Map basics</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Pie maps</a></li>
+            <li><a href="#">Heatmaps</a></li>
+            </ul>
+        </li>        
+         <li><a href="bug.html">Bugs!</a></li>       
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com">GitHub</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to summarising and manipulating data</h1>
+
+</div>
+
+
+<p>When you manipulate data in Excel usually you physically move columns of data around and use pivot tables to summarise things.</p>
+<p>In <code>R</code> there are many ways to manipulate data without altering the underlying dataset (unless you call it the same name ot save over it). In this session we will show you two different packages that are helpful for manipulating your data.</p>
+<div id="importing-the-data-into-r" class="section level1">
+<h1>Importing the data into R</h1>
+<p>To start off we will set our working directory, load the required packages and import the data.</p>
+<pre class="r"><code>#setwd(&quot;C:/Users/YOURNAME/Documents/R_workshop/workshop_material/exercises/data_manipulation&quot;) 
+catch_effort_data &lt;- read.csv(&#39;sample_data.csv&#39;)</code></pre>
+<p>Check the data that you have loaded to make sure you have the correct data set and that it was imported as expected:</p>
+<pre class="r"><code>head(catch_effort_data)</code></pre>
+<pre><code>##   Yr.Month   Yr Month Vessels Trips Sea.Days Hooks.100    ALB.mt    BET.mt
+## 1  2010-01 2010     1       9   101       13      1790 241.63958  4.922446
+## 2  2010-02 2010     2      16    89       21      1685  70.58278  1.537357
+## 3  2010-03 2010     3       9    93       22      1688  67.66562  6.242182
+## 4  2010-04 2010     4      11   102       17      2836 109.43606 10.358611
+## 5  2010-05 2010     5      17   167       33      3446 333.18782 17.738877
+## 6  2010-06 2010     6      11   161       28      3327 262.93567 16.185670
+##      YFT.mt   OTH.mt ALB.no BET.no YFT.no OTH.no
+## 1  7.497130 43.80626  18680    253    959    227
+## 2  5.039798 21.12126   3639     90    296    133
+## 3  4.291998 18.62458   4791    326    187    100
+## 4  4.558048 18.19926   5609    301    172     80
+## 5 17.786435 30.26229  22843    853    900    176
+## 6 16.482259 31.17723  10351    839    856    193</code></pre>
+<pre class="r"><code>tail(catch_effort_data)</code></pre>
+<pre><code>##    Yr.Month   Yr Month Vessels Trips Sea.Days Hooks.100    ALB.mt
+## 76  2016-04 2016     4       6    95       16      2281  70.73303
+## 77  2016-05 2016     5       5    91       17      2879 107.17599
+## 78  2016-06 2016     6       7    92       10      2230 109.05733
+## 79  2016-07 2016     7       5    79       11      2083  83.25952
+## 80  2016-08 2016     8       6    63       10      1940  66.79765
+## 81  2016-09 2016     9       2    39        7       986  39.58645
+##        BET.mt    YFT.mt   OTH.mt ALB.no BET.no YFT.no OTH.no
+## 76  8.7400530 14.575810 11.75672   5960    505    751     47
+## 77 13.9960977 11.515001 13.79641  11506   1125    901     62
+## 78  7.6175485 12.132032 16.36643   6372    657    519     79
+## 79  6.5161283  9.740255 17.97256   5435    255    520     86
+## 80  8.3896574 12.587335 21.04455   3103    379    569    118
+## 81  0.2260984  7.003854 16.12378   3658      9    268     73</code></pre>
+</div>
+<div id="extracting-some-basic-summary-statistics-from-the-dataset" class="section level1">
+<h1>Extracting some basic summary statistics from the dataset</h1>
+<p>Getting some basic information:</p>
+<pre class="r"><code># you can get the average using:
+mean(catch_effort_data$ALB.mt)</code></pre>
+<pre><code>## [1] 100.3675</code></pre>
+<pre class="r"><code># or sum the data
+sum(catch_effort_data$YFT.mt)</code></pre>
+<pre><code>## [1] 1571.912</code></pre>
+<pre class="r"><code># or you can round the number up:
+round(mean(catch_effort_data$ALB.mt), 2) # there the ,2 refers to how many decimal figures you want behind the &#39;.&#39;</code></pre>
+<pre><code>## [1] 100.37</code></pre>
+<p>You can do more complex things, for example: You can get the mean of the albacore catch where the catch for that month was above 75</p>
+<pre class="r"><code># the bit in the [] is the condition you are placing on the analysis (in this case everything above 75 tonnes)
+mean(catch_effort_data$ALB.mt[catch_effort_data$ALB.mt &gt; 75])  </code></pre>
+<pre><code>## [1] 131.0082</code></pre>
+<p>This is how you filter the rows of a data frame the traditional way:</p>
+<pre class="r"><code>head(catch_effort_data[catch_effort_data$ALB.mt &gt; 75, ]) # add the filtering condition within the first slot before the comma</code></pre>
+<pre><code>##   Yr.Month   Yr Month Vessels Trips Sea.Days Hooks.100   ALB.mt    BET.mt
+## 1  2010-01 2010     1       9   101       13      1790 241.6396  4.922446
+## 4  2010-04 2010     4      11   102       17      2836 109.4361 10.358611
+## 5  2010-05 2010     5      17   167       33      3446 333.1878 17.738877
+## 6  2010-06 2010     6      11   161       28      3327 262.9357 16.185670
+## 7  2010-07 2010     7      14   172       40      3228 245.2242 10.974533
+## 8  2010-08 2010     8      18   207       44      4158 229.6272 17.419574
+##      YFT.mt   OTH.mt ALB.no BET.no YFT.no OTH.no
+## 1  7.497130 43.80626  18680    253    959    227
+## 4  4.558048 18.19926   5609    301    172     80
+## 5 17.786435 30.26229  22843    853    900    176
+## 6 16.482259 31.17723  10351    839    856    193
+## 7 22.008948 80.25416  12974    355   1046    392
+## 8 23.312057 68.59603  12040   1037   1568    374</code></pre>
+<p>Note that even though you have just applied a filter on <code>catch_effort_data</code>, the original <code>catch_effort_data</code> remains unchanged. If you want to save a copy of this new filtered <code>catch_effort_data</code>, you need to store it in an object:</p>
+<pre class="r"><code># Keep only rows with catch greater or equal to 200 and assign (store) it to an object called xx
+catch_effort_big_alb &lt;- catch_effort_data[catch_effort_data$ALB.mt &gt;= 200, ]</code></pre>
+</div>
+<div id="using-the-plyr-package-to-pivot-tables-in-r" class="section level1">
+<h1>Using the <strong>plyr</strong> package to pivot tables in R</h1>
+<p><strong>plyr</strong> is a package that can help you manipulate data, sort of like a pivot table in Excel where you can summarise data, e.g. by month, year, country, and then sum or get averages across a set of columns in your data frame.</p>
+<p>For example, using our catch and effort data <code>catch_effort_data</code> we can make a table of data summing the catch and effort data by year and month:</p>
+<pre class="r"><code>library(plyr)
+catch_effort_yy_mo &lt;- ddply(catch_effort_data,~Yr+Month, summarise, alb=sum(ALB.mt), bet=sum(BET.mt), yft=sum(YFT.mt), hook=sum(Hooks.100))
+head(catch_effort_yy_mo)</code></pre>
+<pre><code>##     Yr Month       alb       bet       yft hook
+## 1 2010     1 241.63958  4.922446  7.497130 1790
+## 2 2010     2  70.58278  1.537357  5.039798 1685
+## 3 2010     3  67.66562  6.242182  4.291998 1688
+## 4 2010     4 109.43606 10.358611  4.558048 2836
+## 5 2010     5 333.18782 17.738877 17.786435 3446
+## 6 2010     6 262.93567 16.185670 16.482259 3327</code></pre>
+<p>You can do the same if you want to get the average catch and effort by month over the time period of your data frame:</p>
+<pre class="r"><code>ddply(catch_effort_data,~Month, summarise, alb=mean(ALB.mt), bet=mean(BET.mt), yft=mean(YFT.mt), hook=mean(Hooks.100))</code></pre>
+<pre><code>##    Month       alb       bet      yft     hook
+## 1      1  95.25882  6.096174 30.30744 2195.714
+## 2      2  46.20435  6.226138 16.67016 1648.714
+## 3      3  43.57900  8.231454 15.04155 1957.000
+## 4      4  81.69371  9.533266 16.16526 2723.857
+## 5      5 153.49813 14.854605 29.83772 4054.000
+## 6      6 147.77786 10.134886 22.86039 3776.286
+## 7      7 149.60473 12.120412 25.44946 4326.857
+## 8      8 135.89666 13.387898 16.13055 3869.857
+## 9      9  79.43707  7.326493 15.36091 3438.000
+## 10    10  82.09987 10.994849 14.73267 3740.333
+## 11    11 101.30303  8.857000 14.75685 3487.833
+## 12    12  83.11697  7.853599 13.36851 2800.333</code></pre>
+<p>This is how you summarise the annual catch, but here I have <strong>assigned the table (dataframe)</strong> to an object so we can use it later.</p>
+<pre class="r"><code>annual_data &lt;- ddply(catch_effort_data,~Yr, summarise, alb=sum(ALB.mt), bet=sum(BET.mt), yft=sum(YFT.mt), hook=sum(Hooks.100))
+head(annual_data)</code></pre>
+<pre><code>##     Yr       alb       bet      yft  hook
+## 1 2010 1929.1842 114.35397 147.7219 34304
+## 2 2011 1334.1896 133.71672 243.0802 38434
+## 3 2012 1213.8417 126.10759 182.4774 45725
+## 4 2013 1066.7241  64.70292 167.3771 39420
+## 5 2014  893.6024 129.27535 328.1482 42230
+## 6 2015 1011.7505 134.01550 318.6450 38121</code></pre>
+<p>You may want to round the values off in the data frame</p>
+<pre class="r"><code>annual_data &lt;- round(annual_data) # overwrite the existing annual_data with the rounded off version
+annual_data</code></pre>
+<pre><code>##     Yr  alb bet yft  hook
+## 1 2010 1929 114 148 34304
+## 2 2011 1334 134 243 38434
+## 3 2012 1214 126 182 45725
+## 4 2013 1067  65 167 39420
+## 5 2014  894 129 328 42230
+## 6 2015 1012 134 319 38121
+## 7 2016  680  79 184 17869</code></pre>
+<p>or you can do this in one step</p>
+<pre class="r"><code>annual_data&lt;-ddply(catch_effort_data,~Yr, summarise, alb=round(sum(ALB.mt)), bet=round(sum(BET.mt)), yft=round(sum(YFT.mt)), hook=sum(Hooks.100))
+annual_data</code></pre>
+<pre><code>##     Yr  alb bet yft  hook
+## 1 2010 1929 114 148 34304
+## 2 2011 1334 134 243 38434
+## 3 2012 1214 126 182 45725
+## 4 2013 1067  65 167 39420
+## 5 2014  894 129 328 42230
+## 6 2015 1012 134 319 38121
+## 7 2016  680  79 184 17869</code></pre>
+<p>Have a look at the data in a plot:</p>
+<pre class="r"><code>plot(annual_data$Yr, annual_data$alb) # a basis scatter plot</code></pre>
+<p><img src="data-manip-intro_1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>## tip: to avoid having to rewrite the name of the dataframe multiple times, use the with() function before calling the plot, e.g.: 
+## with(annual_data, plot(Yr, alb))</code></pre>
+</div>
+<div id="subsetting-and-joining-data-frames" class="section level1">
+<h1>Subsetting and joining data frames</h1>
+<div id="subsetting-dataframes" class="section level2">
+<h2>Subsetting dataframes</h2>
+<pre class="r"><code>test_data&lt;-read.csv(&quot;sample_data-long.csv&quot;, header = TRUE)
+df1&lt;-subset(test_data, test_data$yy == 2012)  # get just the data from 2012
+df2&lt;-subset(test_data, test_data$yy %in% c(2011:2013))  # get just the data from 2011-2013
+df3&lt;-subset(test_data, test_data$yy &gt; 2013)  # get just the data from 2014 and up
+df4&lt;-subset(test_data, !test_data$Species == &quot;OTH&quot;)  # get just the data from 2014 and up
+df5&lt;-subset(test_data, !(test_data$Species %in% c(&quot;ALB&quot;,&quot;BET&quot;, &quot;YFT&quot;)))  #check the data
+unique(df4$Species)</code></pre>
+<pre><code>## [1] &quot;ALB&quot; &quot;BET&quot; &quot;YFT&quot;</code></pre>
+<pre class="r"><code># you can also make a custom function to do something specific
+&#39;%not in%&#39; &lt;- function(x,y) !(&#39;%in%&#39;(x,y))
+
+df6&lt;-subset(test_data, test_data$Species %not in% c(&quot;ALB&quot;,&quot;BET&quot;, &quot;YFT&quot;)) 
+
+# and you can use external lists
+tuna&lt;-c(&quot;ALB&quot;,&quot;BET&quot;, &quot;YFT&quot;)
+df7&lt;-subset(test_data, test_data$Species %not in% tuna) 
+
+# df5, df6 and df7 are all the same 
+# to check the dimentions of the dataframe
+dim(test_data)</code></pre>
+<pre><code>## [1] 324  10</code></pre>
+<pre class="r"><code>#check the columns numbers and names 
+t(colnames(test_data))</code></pre>
+<pre><code>##      [,1]       [,2] [,3]    [,4]      [,5]    [,6]       [,7]       
+## [1,] &quot;Yr.Month&quot; &quot;Yr&quot; &quot;Month&quot; &quot;Vessels&quot; &quot;Trips&quot; &quot;Sea.Days&quot; &quot;Hooks.100&quot;
+##      [,8]      [,9]       [,10]     
+## [1,] &quot;Species&quot; &quot;Catch.mt&quot; &quot;Catch.no&quot;</code></pre>
+<pre class="r"><code># you can now make up a new data frame based on the test_data
+# remember in the [] you reference [rows,columns]
+
+sub_1&lt;-test_data[,c(1:6)] # take test_data columns 1:6 only
+sub_2&lt;-test_data[,c(7:10)]# take test_data columns 7:10 only
+sub_3&lt;-test_data[c(1:6),] # take test_data rows 1:6 only
+#You can also do this by using the column name
+sub_a&lt;-test_data[,c(&quot;Yr.Month&quot;,&quot;Yr&quot;,&quot;Month&quot;,&quot;Vessels&quot;,&quot;Trips&quot;,&quot;Sea.Days&quot;)]# take test_data columns 1:6 only
+sub_b&lt;-test_data[,c(&quot;Hooks.100&quot;,&quot;Species&quot;,&quot;Catch.mt&quot;,&quot;Catch.no&quot;)]# take test_data columns 7:10 only
+
+#or you can do a combunation of rows and columns
+sub_c&lt;-test_data[c(1,3,5,7,9),c(&quot;Yr.Month&quot;,&quot;Yr&quot;,&quot;Trips&quot;,&quot;Sea.Days&quot;, &quot;Catch.mt&quot;)]</code></pre>
+</div>
+<div id="joining-data-frames-together-using-rbind-and-cbind" class="section level2">
+<h2>Joining data frames together using <strong>rbind</strong> and <strong>cbind</strong></h2>
+<p>Add rows on to the bottom of <code>df4</code> from <code>df5</code> Note: for this to work the column names must be the same and there must be the same number of columns in each data frame</p>
+<pre class="r"><code>df_row_bind&lt;-rbind(df4, df5) </code></pre>
+<p>Adds columns next to <code>sub_1</code> from <code>sub_2</code> Note: for this to work each data frame must have the same number of rows</p>
+<pre class="r"><code>df_col_bind&lt;-cbind(sub_1, sub_2) </code></pre>
+</div>
+</div>
+<div id="the-reshape2-package-another-way-of-rearranging-data" class="section level1">
+<h1>The <strong>reshape2</strong> package: another way of rearranging data</h1>
+<p><strong>reshape2</strong> is another useful way to re-arrange data unto a format that makes it easier to deal with. For example if you wanted to summarise your data by year and species and build a table you can use <code>dcast</code>. In <code>dcast</code> you use <code>value.var</code> to choose the column of data you want to summarise and <code>fun.aggregate</code> to tell the function what to do eg. sum, mean…</p>
+<pre class="r"><code>require(reshape2)
+catch_yr&lt;-dcast(test_data, Yr ~ Species, value.var = &quot;Catch.mt&quot;, fun.aggregate = sum )
+round(catch_yr)</code></pre>
+<pre><code>##     Yr  ALB BET OTH YFT
+## 1 2010 1929 114 435 148
+## 2 2011 1334 134 244 243
+## 3 2012 1214 126 291 182
+## 4 2013 1067  65 214 167
+## 5 2014  894 129 352 328
+## 6 2015 1012 134 297 319
+## 7 2016  680  79 147 184</code></pre>
+</div>
+
+<p>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

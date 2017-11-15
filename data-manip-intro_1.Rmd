@@ -1,0 +1,159 @@
+---
+title: "Introduction to summarising and manipulating data"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = TRUE)
+```
+
+When you manipulate data in Excel usually you physically move columns of data around and use pivot tables to summarise things. 
+
+In `R` there are many ways to manipulate data without altering the underlying dataset (unless you call it the same name ot save over it). In this session we will show you two different packages that are helpful for manipulating your data. 
+
+# Importing the data into R
+To start off we will set our working directory, load the required packages and import the data.
+```{r}
+#setwd("C:/Users/YOURNAME/Documents/R_workshop/workshop_material/exercises/data_manipulation") 
+catch_effort_data <- read.csv('sample_data.csv')
+```
+
+Check the data that you have loaded to make sure you have the correct data set and that it was imported as expected:
+```{r}
+head(catch_effort_data)
+tail(catch_effort_data)
+```
+
+# Extracting some basic summary statistics from the dataset
+Getting some basic information: 
+```{r}
+# you can get the average using:
+mean(catch_effort_data$ALB.mt)
+# or sum the data
+sum(catch_effort_data$YFT.mt)
+# or you can round the number up:
+round(mean(catch_effort_data$ALB.mt), 2) # there the ,2 refers to how many decimal figures you want behind the '.'
+```
+You can do more complex things, for example:
+You can get the mean of the albacore catch where the catch for that month was above 75
+```{r}
+# the bit in the [] is the condition you are placing on the analysis (in this case everything above 75 tonnes)
+mean(catch_effort_data$ALB.mt[catch_effort_data$ALB.mt > 75])  
+```
+
+This is how you filter the rows of a data frame the traditional way: 
+```{r}
+head(catch_effort_data[catch_effort_data$ALB.mt > 75, ]) # add the filtering condition within the first slot before the comma
+```
+Note that even though you have just applied a filter on `catch_effort_data`, the original `catch_effort_data` remains unchanged. If you want to save a copy of this new filtered `catch_effort_data`, you need to store it in an object:
+```{r}
+# Keep only rows with catch greater or equal to 200 and assign (store) it to an object called xx
+catch_effort_big_alb <- catch_effort_data[catch_effort_data$ALB.mt >= 200, ]
+```
+
+# Using the **plyr** package to pivot tables in R
+**plyr** is a package that can help you manipulate data, sort of like a pivot table in Excel where you can summarise data, e.g. by month, year, country, and then sum or get averages across a set of columns in your data frame. 
+
+For example, using our catch and effort data `catch_effort_data` we can make a table of data summing the catch and effort data by year and month: 
+```{r, message=FALSE}
+library(plyr)
+catch_effort_yy_mo <- ddply(catch_effort_data,~Yr+Month, summarise, alb=sum(ALB.mt), bet=sum(BET.mt), yft=sum(YFT.mt), hook=sum(Hooks.100))
+head(catch_effort_yy_mo)
+```
+
+You can do the same if you want to get the average catch and effort by month over the time period of your data frame:
+```{r}
+ddply(catch_effort_data,~Month, summarise, alb=mean(ALB.mt), bet=mean(BET.mt), yft=mean(YFT.mt), hook=mean(Hooks.100))
+```
+
+This is how you summarise the annual catch, but here I have **assigned the table (dataframe)** to an object so we can use it later.
+```{r}
+annual_data <- ddply(catch_effort_data,~Yr, summarise, alb=sum(ALB.mt), bet=sum(BET.mt), yft=sum(YFT.mt), hook=sum(Hooks.100))
+head(annual_data)
+```
+
+You may want to round the values off in the data frame
+```{r}
+annual_data <- round(annual_data) # overwrite the existing annual_data with the rounded off version
+annual_data
+```
+
+or you can do this in one step
+
+```{r}
+annual_data<-ddply(catch_effort_data,~Yr, summarise, alb=round(sum(ALB.mt)), bet=round(sum(BET.mt)), yft=round(sum(YFT.mt)), hook=sum(Hooks.100))
+annual_data
+```
+
+Have a look at the data in a plot:
+
+```{r}
+plot(annual_data$Yr, annual_data$alb) # a basis scatter plot
+
+## tip: to avoid having to rewrite the name of the dataframe multiple times, use the with() function before calling the plot, e.g.: 
+## with(annual_data, plot(Yr, alb))
+```
+
+# Subsetting and joining data frames
+## Subsetting dataframes
+```{r}
+test_data<-read.csv("sample_data-long.csv", header = TRUE)
+df1<-subset(test_data, test_data$yy == 2012)  # get just the data from 2012
+df2<-subset(test_data, test_data$yy %in% c(2011:2013))  # get just the data from 2011-2013
+df3<-subset(test_data, test_data$yy > 2013)  # get just the data from 2014 and up
+df4<-subset(test_data, !test_data$Species == "OTH")  # get just the data from 2014 and up
+df5<-subset(test_data, !(test_data$Species %in% c("ALB","BET", "YFT")))  #check the data
+unique(df4$Species)
+
+# you can also make a custom function to do something specific
+'%not in%' <- function(x,y) !('%in%'(x,y))
+
+df6<-subset(test_data, test_data$Species %not in% c("ALB","BET", "YFT")) 
+
+# and you can use external lists
+tuna<-c("ALB","BET", "YFT")
+df7<-subset(test_data, test_data$Species %not in% tuna) 
+
+# df5, df6 and df7 are all the same 
+# to check the dimentions of the dataframe
+dim(test_data)
+#check the columns numbers and names 
+t(colnames(test_data))
+
+# you can now make up a new data frame based on the test_data
+# remember in the [] you reference [rows,columns]
+
+sub_1<-test_data[,c(1:6)] # take test_data columns 1:6 only
+sub_2<-test_data[,c(7:10)]# take test_data columns 7:10 only
+sub_3<-test_data[c(1:6),] # take test_data rows 1:6 only
+#You can also do this by using the column name
+sub_a<-test_data[,c("Yr.Month","Yr","Month","Vessels","Trips","Sea.Days")]# take test_data columns 1:6 only
+sub_b<-test_data[,c("Hooks.100","Species","Catch.mt","Catch.no")]# take test_data columns 7:10 only
+
+#or you can do a combunation of rows and columns
+sub_c<-test_data[c(1,3,5,7,9),c("Yr.Month","Yr","Trips","Sea.Days", "Catch.mt")]
+
+```
+
+##Joining data frames together using **rbind** and **cbind** 
+Add rows on to the bottom of `df4` from `df5`
+Note:  for this to work the column names must be the same and there must be the same number of columns in each data frame
+```{r}
+df_row_bind<-rbind(df4, df5) 
+```
+
+Adds columns next to `sub_1` from `sub_2`
+Note: for this to work each data frame must have the same number of rows 
+```{r}
+df_col_bind<-cbind(sub_1, sub_2) 
+```
+
+# The **reshape2** package: another way of rearranging data
+**reshape2** is another useful way to re-arrange data unto a format that makes it easier to deal with. For example if you wanted to summarise your data by year and species and build a table you can use `dcast`. In `dcast` you use `value.var` to choose the column of data you want to summarise and `fun.aggregate` to tell the function what to do eg. sum, mean...
+```{r, message=FALSE}
+require(reshape2)
+catch_yr<-dcast(test_data, Yr ~ Species, value.var = "Catch.mt", fun.aggregate = sum )
+round(catch_yr)
+```
+
+

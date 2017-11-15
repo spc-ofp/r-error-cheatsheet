@@ -4,10 +4,10 @@
     html_document:
       toc: true
 ---
-*Pssst:* R bug not here? Send the bug to Slack #rtvmworkshop, including ?rbug in your message so that we can search for it.  
+*Pssst:* R bug not here? Send the bug to Slack #rpalauworkshop, including ?rbug in your message so that we can search for it.  
 
 ```{r setup, include=FALSE, echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE, highlight=TRUE, prompt=TRUE)
+knitr::opts_chunk$set(echo = TRUE, highlight=TRUE, prompt=TRUE, cache=TRUE)
 ```
 ***
 ### <font color="red"> Error: unexpected ')' in "some.object <- 2)"</font>  

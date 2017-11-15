@@ -1,14 +1,12 @@
 ---
 title: "My first ggplot map"
-output: 
-  html_document: 
-    toc: true
-    toc_float: true
-
 ---
-```{r setup, include=FALSE, echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE, highlight=TRUE, prompt=TRUE, cache=TRUE)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = TRUE)
 ```
+
 # Introduction
 ggplot is a useful way to create maps and add layers to the map. 
 
@@ -99,7 +97,7 @@ Now you are ready to start plotting.
 ```{r}
 
 # make the map this is compiled like a ggplot graph but it puts it together as a series of layers
-p          <- ggplot() +
+my_map          <- ggplot() +
   # add in the polygons (the shape of the eezs)
   # note aes is the long (x) and lat (y) coordinates 
   # note add the eezs first then the countries over them
@@ -132,7 +130,9 @@ p          <- ggplot() +
         axis.title.y = element_text(size=14,angle=90)) +  
   xlab('long') + ylab('lat') 
 
-p
+#p
+windows(20,16) 
+my_map
 
 #savePlot("test_map", type="png")
 
@@ -182,7 +182,7 @@ states     <- subset(all_states, region %in%
                          "Peru", "Guatemala","Venezuela","Bolivia","Paraguay" ))
 
 # First make the map basic map and allocate it to the object called p
-p  <- ggplot() +
+my_new_map  <- ggplot() +
   geom_polygon(data=eez, aes(eez[,1], eez[,2]), colour="white", fill=grecol) + # All eezs
   geom_polygon(data=eez_pna, aes(eez_pna[,1], eez_pna[,2]), colour="white", fill="blue") + # PNA eezs
   geom_polygon(data=states, aes(x=long, y=lat, group = group),colour ="white",  fill="grey10" ) + # Add the countries
@@ -207,10 +207,10 @@ Here we use some averaged data for 5 countries showing the average annual caych 
 # Add in the pie charts 
 # if the pies are too big shrink the radius eg in this example I divide by 1500
 windows(20,16) 
-p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c("alb","bet","yft"),  color="black", alpha=.8) + # This adds on the pie chart  cols is the columns used in the pie chart.
+my_new_map + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/700), data=pool_dat, cols=c("alb","bet","yft"),  color="black", alpha=.8) + # This adds on the pie chart  cols is the columns used in the pie chart.
     geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates
 
-#savePlot("pie_map", type="png")
+savePlot("pie_map", type="png")
 
 ```
 
@@ -218,11 +218,11 @@ p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat,
 Use the scale_fill_manual and add that in as a new layer
 ```{r}
 windows(20,16) 
-p + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c("alb","bet","yft"),  color="black", alpha=.8) + 
+my_new_map + geom_scatterpie(aes(x=long, y=lat, group=region, r=tot/1500), data=pool_dat, cols=c("alb","bet","yft"),  color="black", alpha=.8) + 
   scale_fill_manual(values = c("forestgreen", "red", "yellow"))+ # To manually change the colours of the piechart
   geom_scatterpie_legend(pool_dat$tot/1500, x=220, y=-50)   # this bit adds in the legend and places it at the x and y cordinates
 
-#savePlot("pie_map_cols", type="png")
+savePlot("pie_map_cols", type="png")
 ```
 
 
