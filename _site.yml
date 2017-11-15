@@ -12,7 +12,7 @@ navbar:
     - text: "Mapping"
       href: ggplot_maps.html
     - text: "Bug help"
-      href: bug.html      
+      href: bug.html
 output: 
   html_document:
     theme: cosmo
