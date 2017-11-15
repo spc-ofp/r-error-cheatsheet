@@ -1,0 +1,157 @@
+---
+title: "Heatmaps in R"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+```
+
+Load all the required packages.
+
+```{r, message=FALSE}
+library(survival)
+library(maps)
+library(maptools)
+library(mapdata)
+library(ggplot2)
+library(plyr)
+library(grid)
+library(scatterpie)
+```
+
+# Import the datasets into R
+```{r}
+## Data for mapping:
+load('fake-dorado-map-data.RData', verbose=TRUE)
+head(fake.dorado)
+
+## EEZ Data
+#eez overlay
+eez        <- read.table("EZNEW2.txt", sep=" ", header=F, skip=0) #All regions
+eez_pna  <- read.csv("pna_eez.csv") #PNA regions
+
+## Import continent line dataset
+load(file = 'continent-outlines-only.RData', verbose=TRUE)
+
+all_states <- map_data("world2Hires")
+```
+
+# A very simple heatmap
+```{r}
+subdo <- subset(fake.dorado, fake.dorado$Year == 2015)
+# how many rows with each year in my original dataset
+table(fake.dorado$Year) 
+# how many rows in my filtered dataset
+table(subdo$Year)
+table(subdo$flag_id)
+# subset for JP only
+subdo_jp <- subset(subdo, subdo$flag_id == 'JP')
+table(subdo_jp$flag_id) 
+```
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt))
+p
+```
+
+Make a heatmap of the yellowfin catch
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=yft_mt))
+p
+```
+
+Make a heatmap of the bigeye catch
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=bet_mt))
+p
+```
+
+Make a heatmap with a different colour scheme: 
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = 'Spectral')
+p
+```
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = 'YlOrRd')
+p
+```
+
+Now let's add a new layer with EEZ outlines
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = 'Spectral') +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), size=2, colour="white", fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(190,205), ylim=c(2,18)) +
+  theme_bw() # make background white instead of grey
+p
+```
+
+The next step is to add our continent layer: 
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = 'Spectral') +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), size=2, colour="white", fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(180,205), ylim=c(2,26)) +
+  theme_bw() + # make background white instead of grey + 
+  geom_path(data=countrydf, aes(x=lon, y=lat, group=id))
+p
+```
+
+Draw this instead with the high resolution polygon dataset: 
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = 'Spectral') +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), size=2, colour="white", fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(180,205), ylim=c(2,26)) +
+  theme_bw() + # make background white instead of grey + 
+  geom_polygon(data=all_states, aes(x=long, y=lat, group = group),
+               colour ="white",  fill="grey10" )
+p
+```
+
+# Making a map panel 
+```{r}
+p <- ggplot() +
+  geom_tile(data=subdo, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = 'Spectral') +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(x=V1, y=V2), size=2, 
+               colour="white", fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(190,205), ylim=c(2,19)) +
+ # coord_equal() +
+  theme_bw() +
+  facet_wrap(~flag_id)
+p
+```
+
+# Exercises
+Doing the same figure but with my Dorado extract.
+Make sure your Dorado folder (e.g. MH) in in the ggmaps folder.
+Note: for Dorado extracts only, need to specify `fileEncoding='UTF-8-BOM'`
+
+## Import my Dorado data
+```{r, eval=FALSE}
+dorado.dat <- read.csv('PW/PW custom report 100.csv', fileEncoding = 'UTF-8-BOM')
+```
+
+## Filter for 2015

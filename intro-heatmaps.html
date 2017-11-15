@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Heatmaps in R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="bootstrap.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Getting started <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="intro.html">R basics</a></li>
+            <li><a href="#">Data import</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Data import from Dorado</a></li>
+          </ul>
+        </li>
+       <li><a href="data-manip-intro_1.html">Data manipulation</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plots <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Base plots</a></li>
+            <li><a href="#">ggplot</a></li>
+            <li><a href="#">ggplot + Google maps</a></li>
+          </ul>
+        </li>  
+       <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Maps <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Map basics</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Pie maps</a></li>
+            <li><a href="intro-heatmaps.Rmd">Heatmaps</a></li>
+            </ul>
+        </li>        
+         <li><a href="bug.html">Bugs!</a></li>       
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com">GitHub</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Heatmaps in R</h1>
+
+</div>
+
+
+<p>Load all the required packages.</p>
+<pre class="r"><code>library(survival)
+library(maps)
+library(maptools)
+library(mapdata)
+library(ggplot2)
+library(plyr)
+library(grid)
+library(scatterpie)</code></pre>
+<div id="import-the-datasets-into-r" class="section level1">
+<h1>Import the datasets into R</h1>
+<pre class="r"><code>## Data for mapping:
+load(&#39;fake-dorado-map-data.RData&#39;, verbose=TRUE)</code></pre>
+<pre><code>## Loading objects:
+##   fake.dorado</code></pre>
+<pre class="r"><code>head(fake.dorado)</code></pre>
+<pre><code>##   Year latitude longitude flag_id alb_mt bet_mt yft_mt
+## 1 2015        4       191      JP   0.11   0.40   0.20
+## 2 2015        4       192      JP   0.34   0.16   0.08
+## 3 2015        4       193      JP   0.14   1.12   0.56
+## 4 2015        4       194      JP   0.53   0.06   0.03
+## 5 2015        4       195      JP   0.43   0.10   0.05
+## 6 2015        4       196      JP   0.11   1.24   0.62</code></pre>
+<pre class="r"><code>## EEZ Data
+#eez overlay
+eez        &lt;- read.table(&quot;EZNEW2.txt&quot;, sep=&quot; &quot;, header=F, skip=0) #All regions
+eez_pna  &lt;- read.csv(&quot;pna_eez.csv&quot;) #PNA regions
+
+## Import continent line dataset
+load(file = &#39;continent-outlines-only.RData&#39;, verbose=TRUE)</code></pre>
+<pre><code>## Loading objects:
+##   countrydf</code></pre>
+<pre class="r"><code>all_states &lt;- map_data(&quot;world2Hires&quot;)</code></pre>
+</div>
+<div id="a-very-simple-heatmap" class="section level1">
+<h1>A very simple heatmap</h1>
+<pre class="r"><code>subdo &lt;- subset(fake.dorado, fake.dorado$Year == 2015)
+# how many rows with each year in my original dataset
+table(fake.dorado$Year) </code></pre>
+<pre><code>## 
+## 2015 2016 
+##  420  420</code></pre>
+<pre class="r"><code># how many rows in my filtered dataset
+table(subdo$Year)</code></pre>
+<pre><code>## 
+## 2015 
+##  420</code></pre>
+<pre class="r"><code>table(subdo$flag_id)</code></pre>
+<pre><code>## 
+##  JP  TW 
+## 210 210</code></pre>
+<pre class="r"><code># subset for JP only
+subdo_jp &lt;- subset(subdo, subdo$flag_id == &#39;JP&#39;)
+table(subdo_jp$flag_id) </code></pre>
+<pre><code>## 
+##  JP 
+## 210</code></pre>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt))
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Make a heatmap of the yellowfin catch</p>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=yft_mt))
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Make a heatmap of the bigeye catch</p>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=bet_mt))
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Make a heatmap with a different colour scheme:</p>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = &#39;Spectral&#39;)
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = &#39;YlOrRd&#39;)
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Now let’s add a new layer with EEZ outlines</p>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = &#39;Spectral&#39;) +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), size=2, colour=&quot;white&quot;, fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(190,205), ylim=c(2,18)) +
+  theme_bw() # make background white instead of grey
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The next step is to add our continent layer:</p>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = &#39;Spectral&#39;) +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), size=2, colour=&quot;white&quot;, fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(180,205), ylim=c(2,26)) +
+  theme_bw() + # make background white instead of grey + 
+  geom_path(data=countrydf, aes(x=lon, y=lat, group=id))
+p</code></pre>
+<pre><code>## Warning: Removed 53 rows containing missing values (geom_path).</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Draw this instead with the high resolution polygon dataset:</p>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo_jp, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = &#39;Spectral&#39;) +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(eez[,1], eez[,2]), size=2, colour=&quot;white&quot;, fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(180,205), ylim=c(2,26)) +
+  theme_bw() + # make background white instead of grey + 
+  geom_polygon(data=all_states, aes(x=long, y=lat, group = group),
+               colour =&quot;white&quot;,  fill=&quot;grey10&quot; )
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="making-a-map-panel" class="section level1">
+<h1>Making a map panel</h1>
+<pre class="r"><code>p &lt;- ggplot() +
+  geom_tile(data=subdo, aes(x=longitude, y=latitude, fill=alb_mt)) +
+  scale_fill_distiller(palette = &#39;Spectral&#39;) +
+  ## added a polygon layer with the EEZs, only drew EEZ outline (fill=NA)
+  geom_polygon(data=eez, aes(x=V1, y=V2), size=2, 
+               colour=&quot;white&quot;, fill=NA) +
+  ## narrowed the x and y range of the plot to fit our dataset
+  coord_cartesian(xlim=c(190,205), ylim=c(2,19)) +
+ # coord_equal() +
+  theme_bw() +
+  facet_wrap(~flag_id)
+p</code></pre>
+<p><img src="intro-heatmaps_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="exercises" class="section level1">
+<h1>Exercises</h1>
+<p>Doing the same figure but with my Dorado extract. Make sure your Dorado folder (e.g. MH) in in the ggmaps folder. Note: for Dorado extracts only, need to specify <code>fileEncoding='UTF-8-BOM'</code></p>
+<div id="import-my-dorado-data" class="section level2">
+<h2>Import my Dorado data</h2>
+<pre class="r"><code>dorado.dat &lt;- read.csv(&#39;PW/PW custom report 100.csv&#39;, fileEncoding = &#39;UTF-8-BOM&#39;)</code></pre>
+</div>
+<div id="filter-for-2015" class="section level2">
+<h2>Filter for 2015</h2>
+</div>
+</div>
+
+<p>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
