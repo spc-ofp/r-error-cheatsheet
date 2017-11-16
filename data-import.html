@@ -11,7 +11,7 @@
 
 
 
-<title>Welcome</title>
+<title>Data import</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
@@ -162,6 +165,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
@@ -217,38 +315,45 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Welcome</h1>
+<h1 class="title toc-ignore">Data import</h1>
 
 </div>
 
 
-<script>
-   $(document).ready(function() {
-     $head = $('#header');
-     $head.prepend('<img src=\"spc-logo.png\" style=\"float: right;width: 150px;\"/>')
-   });
-</script>
-<p>Hello!</p>
-<p>The tutorials we ran during the workshop are included here, let us know if you have any questions!</p>
-<p>You will need the datasets for these to work, find them <a href="https://github.com/spc-ofp/r-error-cheatsheet/tree/master/data">here</a>.</p>
-<p>And all the <code>.Rmd</code> files used are <a href="https://github.com/spc-ofp/r-error-cheatsheet">here</a>.</p>
-<p>The best way to find help online is on <a href="https://stackoverflow.com/questions/tagged/r">Stack Overflow</a> but there are also countless R bloggers that provide tutorials on a range of topics (find all of the R blogs <a href="https://www.r-bloggers.com/">here</a>).</p>
-<p><strong>More resources to learn R:</strong></p>
-<ul>
-<li>A fun overview (or refresher!) of the syntax: <a href="tryr.codeschool.com/">TryR Code school</a></li>
-<li>Two e-books: …</li>
-<li>Cheatsheets:
-<ul>
-<li>basics</li>
-<li>ggplot2</li>
-<li>data manipulation</li>
-<li>R markdown</li>
-</ul></li>
-</ul>
+<div id="from-excel-.xls-.txt-.csv" class="section level1">
+<h1>From Excel (.xls, .txt, .csv)</h1>
+<p>You can read in an external data set from a <code>.txt</code> or <code>.csv</code> file using the functions <code>read.table()</code> or <code>read.csv()</code>. If your data is in Excel, the easiest option is first convert your <code>.xls</code> into a <code>.csv</code> (using Save As…). Once your spreadsheet has been converted to a <code>.csv</code>, you can import it and store it in a R dataframe as follows:</p>
+<pre class="r"><code>catch_effort &lt;- read.csv(file=&quot;sample_data.csv&quot;) # your table is now stored in the object &#39;catch_effort&#39;
+head(catch_effort) # have a look at the first 6 rows</code></pre>
+<pre><code>##   Yr.Month   Yr Month Vessels Trips Sea.Days Hooks.100    ALB.mt    BET.mt
+## 1  2010-01 2010     1       9   101       13      1790 241.63958  4.922446
+## 2  2010-02 2010     2      16    89       21      1685  70.58278  1.537357
+## 3  2010-03 2010     3       9    93       22      1688  67.66562  6.242182
+## 4  2010-04 2010     4      11   102       17      2836 109.43606 10.358611
+## 5  2010-05 2010     5      17   167       33      3446 333.18782 17.738877
+## 6  2010-06 2010     6      11   161       28      3327 262.93567 16.185670
+##      YFT.mt   OTH.mt ALB.no BET.no YFT.no OTH.no
+## 1  7.497130 43.80626  18680    253    959    227
+## 2  5.039798 21.12126   3639     90    296    133
+## 3  4.291998 18.62458   4791    326    187    100
+## 4  4.558048 18.19926   5609    301    172     80
+## 5 17.786435 30.26229  22843    853    900    176
+## 6 16.482259 31.17723  10351    839    856    193</code></pre>
+<p>Ps: you can read in a <code>.xls</code> file directly but you will need to install the <code>gdata</code> library first, and you might have to install an additional software (Perl).</p>
+</div>
+<div id="from-r-.rdata" class="section level1">
+<h1>From R (.RData)</h1>
+<p>If your data has already been formatted and saved as a R object, you can import it directly using <code>load()</code>. Files with the extension <code>.RData</code> contain R objects, load them with the argument <code>verbose=TRUE</code> so that the name of the objects gets printed out.</p>
+<pre class="r"><code>load(&#39;catch.RData&#39;, verbose=TRUE)</code></pre>
+<pre><code>## Loading objects:
+##   catch_effort</code></pre>
+</div>
 
 <p>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>
 
 
+</div>
+</div>
 
 </div>
 

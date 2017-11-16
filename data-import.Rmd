@@ -1,0 +1,32 @@
+---
+title: "Data import"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+```
+
+# From Excel (.xls, .txt, .csv)
+
+You can read in an external data set from a `.txt` or `.csv` file using the functions `read.table()` or `read.csv()`.
+If your data is in Excel, the easiest option is first convert your `.xls` into a `.csv` (using Save As...). Once your spreadsheet has been converted to a `.csv`, you can import it and store it in a R dataframe as follows: 
+
+```{r}
+catch_effort <- read.csv(file="sample_data.csv") # your table is now stored in the object 'catch_effort'
+head(catch_effort) # have a look at the first 6 rows
+```
+
+
+Ps: you can read in a `.xls` file directly but you will need to install the `gdata` library first, and you might have to install an additional software (Perl).
+
+# From R (.RData)
+
+If your data has already been formatted and saved as a R object, you can import it directly using `load()`. Files with the extension `.RData` contain R objects, load them with the argument `verbose=TRUE` so that the name of the objects gets printed out.
+
+```{r}
+load('catch.RData', verbose=TRUE)
+```

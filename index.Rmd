@@ -17,9 +17,15 @@ You will need the datasets for these to work, find them [here](https://github.co
 
 And all the `.Rmd` files used are [here](https://github.com/spc-ofp/r-error-cheatsheet). 
 
+The best way to find help online is on [Stack Overflow](https://stackoverflow.com/questions/tagged/r) but there are also countless R bloggers that provide tutorials on a range of topics (find all of the R blogs [here](https://www.r-bloggers.com/)). 
+
+
 **More resources to learn R:**
 
-- A fun overview/refresher of the syntax: [TryR Code school](tryr.codeschool.com/)
+- A fun overview (or refresher!) of the syntax: [TryR Code school](tryr.codeschool.com/)
 - Two e-books: ... 
-- Cheatsheets: ... 
-
+- Cheatsheets: 
+    * basics
+    * ggplot2
+    * data manipulation
+    * R markdown

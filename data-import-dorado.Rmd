@@ -1,0 +1,17 @@
+---
+title: "Data import from Dorado"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Saving the Dorado report for R
+
+# Importing the Dorado report into R
+
+# Modifying the column names

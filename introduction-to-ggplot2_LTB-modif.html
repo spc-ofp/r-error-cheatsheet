@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Introduction to the ggplot2 package</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="bootstrap.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- NOTE: add "navbar-inverse" class for an alternate navbar background -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R workshop</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Getting started <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="intro.html">R basics</a></li>
+            <li><a href="data-import.html">Data import</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Data import from Dorado</a></li>
+          </ul>
+        </li>
+       <li><a href="data-manip-intro_1.html">Data manipulation</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plots <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Base plots</a></li>
+            <li><a href="introduction-to-ggplot2_LTB-modif.html">ggplot</a></li>
+          </ul>
+        </li>  
+       <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Maps <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Map basics</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="ggplot_maps.Rmd">Pie maps</a></li>
+            <li><a href="intro-heatmaps.Rmd">Heatmaps</a></li>
+            </ul>
+        </li>        
+         <li><a href="bug.html">Bugs!</a></li>       
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com">GitHub</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to the ggplot2 package</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#getting-things-ready"><span class="toc-section-number">1</span> Getting things ready</a></li>
+<li><a href="#sample-data-set"><span class="toc-section-number">2</span> Sample data set</a></li>
+<li><a href="#inital-plot-setup"><span class="toc-section-number">3</span> Inital plot setup</a></li>
+<li><a href="#histogram-and-density-plots"><span class="toc-section-number">4</span> Histogram and density plots</a></li>
+<li><a href="#scatterplots"><span class="toc-section-number">5</span> Scatterplots</a><ul>
+<li><a href="#introductory-example"><span class="toc-section-number">5.1</span> Introductory example</a></li>
+<li><a href="#exercises"><span class="toc-section-number">5.2</span> Exercises</a></li>
+</ul></li>
+<li><a href="#adding-a-trend-line-to-the-plot"><span class="toc-section-number">6</span> Adding a trend line to the plot</a><ul>
+<li><a href="#monthly-albacore-catch-over-time"><span class="toc-section-number">6.1</span> Monthly albacore catch over time</a><ul>
+<li><a href="#adding-plot-labels"><span class="toc-section-number">6.1.1</span> Adding plot labels</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#further-examples-and-help-on-the-internet"><span class="toc-section-number">7</span> Further examples and help on the internet</a></li>
+</ul>
+</div>
+
+<div id="getting-things-ready" class="section level1">
+<h1><span class="header-section-number">1</span> Getting things ready</h1>
+<p>First we load the <strong>ggplot2</strong> package:</p>
+<pre class="r"><code># Load ggplot2 package and some others
+library(ggplot2)</code></pre>
+</div>
+<div id="sample-data-set" class="section level1">
+<h1><span class="header-section-number">2</span> Sample data set</h1>
+<p>Your working directory can be found with the command <em>getwd()</em>. This is the directory where data is loaded from and saved to by default. Commonly this directory is set to the same directory as where your R script or Markdown file is.</p>
+<p>If the data set is in your working directory it can be read in directly without giving the directory name. We assume the data set is in the working directory, read it in, and check the result with the <code>head</code> command.</p>
+<pre class="r"><code># catch and effort data
+ce &lt;- read.csv(&quot;sample.csv&quot;)</code></pre>
+<pre class="r"><code>head(ce)</code></pre>
+<pre><code>  Yr.Month   Yr Month Vessels Trips Sea.Days Hooks.100    ALB.mt    BET.mt
+1  2010-01 2010     1       9   101       13      1790 241.63958  4.922446
+2  2010-02 2010     2      16    89       21      1685  70.58278  1.537357
+3  2010-03 2010     3       9    93       22      1688  67.66562  6.242182
+4  2010-04 2010     4      11   102       17      2836 109.43606 10.358611
+5  2010-05 2010     5      17   167       33      3446 333.18782 17.738877
+6  2010-06 2010     6      11   161       28      3327 262.93567 16.185670
+     YFT.mt   OTH.mt ALB.no BET.no YFT.no OTH.no
+1  7.497130 43.80626  18680    253    959    227
+2  5.039798 21.12126   3639     90    296    133
+3  4.291998 18.62458   4791    326    187    100
+4  4.558048 18.19926   5609    301    172     80
+5 17.786435 30.26229  22843    853    900    176
+6 16.482259 31.17723  10351    839    856    193</code></pre>
+<p>Ps: If the data set is in a different directory from your working directory then you need to tell the <code>read.csv</code> command where this directory is.</p>
+</div>
+<div id="inital-plot-setup" class="section level1">
+<h1><span class="header-section-number">3</span> Inital plot setup</h1>
+<p>We wish to make a histogram and density plot for the column <em>ALB.mt</em> (monthly albacore tuna in metric tonnes).</p>
+<p>The initial setup for these plots is done with the <strong>ggplot</strong> function, which by itself it produces an empty plot.</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt))  </code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/ggplot%20setup-1.png" width="3500" /></p>
+<p>The purpose of the <em>ggplot</em> function is to</p>
+<ul>
+<li>state what data frame to use: <code>data = ce</code></li>
+<li>state what columns we wish to plot: <code>aes(x = ALB.mt)</code></li>
+</ul>
+<p>The argument <code>aes</code> is short for aesthetic and refers to general aspects of a plot (e.g. what is to be plotted, should the plot be broken up into groups such as months). You’ll see more examples below to clarify what this means.</p>
+<p>The code above says that we wish to plot the column <code>ALB.mt</code> from the data frame <code>ce</code>, but doesn’t say how to do this plot (e.g. a histogram, density, scatter plot). To give a specific type of plot, further instructions are added to the code, as we will see in the following sections where we make histograms and density plots.</p>
+</div>
+<div id="histogram-and-density-plots" class="section level1">
+<h1><span class="header-section-number">4</span> Histogram and density plots</h1>
+<p>In this section we make histograms and density plots for the albacore tuna catch.</p>
+<p>A non-empty plot will be made once you state what sort of plot you wish to make (e.g. histogram or density plot), which is referred to as the <em>geometry</em> for the plot. In this case we wish to plot x (i.e. ALB.mt) as a histogram, so we use the function <strong>geom_histogram</strong>. Refer to the ggplot2 cheat sheet for the other type of plots you can make for a single column of data (called One Variable in the cheat sheet)</p>
+<p>As choosing the bin width is often best done manually, to explore what patterns there are in the data, the function suggests using the <em>binwidth</em> argument to do this. The default is to use 30 bins for the plot.</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt)) +
+  geom_histogram()</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/histogram-1.png" width="3500" /></p>
+<p>You can give arguments to the geom_histogram function for the bin width and fill colour of the histogram. The default bin width looks pretty reasonable, but I’ve a chosen something different to illustrate setting the bin width.</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt)) +
+  geom_histogram(binwidth = 20, fill = &quot;darkblue&quot;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/plot%20histogram%20explicit-1.png" width="3500" /></p>
+<p>Now do a histogram with bins of size 10, and fill the rectangles with another colour.</p>
+<p>Use <code>theme_set()</code> to change the default plot theme to have a white background.</p>
+<pre class="r"><code>theme_set(theme_bw()) # set all ggplots to have a black and white background
+
+ggplot(data = ce, aes(x = ALB.mt)) +
+  geom_histogram(binwidth = 10, fill = &quot;tomato3&quot;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/plot%20histogram%20explicit%20II-1.png" width="3500" /></p>
+<p>In the next plot we explicitly define the bin widths using the <em>breaks</em> argument. The first bin goes from 0 to 20 and is centred on 10 metric tonnes.</p>
+<p>To change the interval width in function <code>seq()</code>, modify the value of the <code>by=</code> argument to 50.</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt)) +
+  geom_histogram(breaks = seq(from = 0, to = 350, by = 50), 
+                 fill = &quot;darkblue&quot;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/plot%20histogram%20explicit%20III-1.png" width="3500" /></p>
+<p>If we wish to make a density plot we change the “geometry” by using the <strong>geom_density</strong> function. The argument <em>adjust</em> for this function determines how smooth the density plot is, with higher values giving smoother plots.</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt)) +
+  geom_density(adjust = 0.1, fill = &quot;darkblue&quot;)  # play with the adjust argument to see what it does</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/plot%20density-1.png" width="3500" /></p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt)) +
+  geom_dotplot(fill=&#39;darkblue&#39;, color=&#39;red&#39;)</code></pre>
+<pre><code>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/plot%20density%20II-1.png" width="3500" /></p>
+</div>
+<div id="scatterplots" class="section level1">
+<h1><span class="header-section-number">5</span> Scatterplots</h1>
+<div id="introductory-example" class="section level2">
+<h2><span class="header-section-number">5.1</span> Introductory example</h2>
+<p>In this section we plot the big eye tuna catch against the albacore tuna catch. As before the initial plot setup is done with the <strong>ggplot</strong> function, adding in another argument for the big eye tuna catch.</p>
+<pre class="r"><code>## Both x and y are continuous variables
+## In the cheatsheet, look under the Two Variables/Continous X-Continuous Y panel
+ggplot(data = ce, aes(x = ALB.mt, y = BET.mt))  </code></pre>
+<p>The code above says that we wish to plot the columns “ALB.mt” and “BET.mt”&quot; from the data frame “ce”, but doesn’t say how to do this plot (e.g. using points or lines).</p>
+<p>As we wish to plot points we use the function <strong>geom_point</strong>. Refer to the ggplot2 cheat sheet to see what other types of plots can be made (under the heading <strong>Continuous X, Continuous Y</strong>).</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt, y = BET.mt))  + geom_point()</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/ggplot%20scatterplot%20I-1.png" width="3500" /></p>
+<p>We could also plot this using lines if we wanted to, using <strong>geom_line</strong> instead.</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt, y = BET.mt))  + geom_line()</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-1-1.png" width="3500" /> (Ugh!)</p>
+<p>We can even combine different plot types:</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt, y = BET.mt))  +
+  geom_line(color=&#39;grey&#39;) + geom_point(color=&#39;red&#39;) </code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-2-1.png" width="3500" /></p>
+<pre class="r"><code># can change individual features by layer</code></pre>
+<p>If we wanted to keep track of which months was which on the graph, we could specify in the <code>aes</code> function to also colour the points by month:</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt, y = BET.mt, color=Month))  +
+  geom_point()</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-3-1.png" width="3500" /></p>
+<p>To treat the months as discrete values, add <code>as.factor(Month)</code> instead, this makes <code>R</code> treat the month numbers as categories:</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt, y = BET.mt, color=as.factor(Month)))  +
+  geom_point() </code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-4-1.png" width="3500" /></p>
+</div>
+<div id="exercises" class="section level2">
+<h2><span class="header-section-number">5.2</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>Make a histogram of yellowfin catch with appropriate bin widths. Bonus: Add properly labelled x and y axis.</li>
+</ol>
+<pre class="r"><code>ggplot(data = ce, aes(x = YFT.mt)) +
+  geom_histogram(binwidth = 5, fill = &quot;gold&quot;) + 
+  labs(x=&#39;Monthly yellowfin catch (mt)&#39;, y=&#39;Count&#39;, title=&#39;Yellowfin&#39;, subtitle=&#39;A very tasty tuna&#39;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-5-1.png" width="3500" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Make a density plot of bigeye catch, coloured with the bigeye WCPFC colour (<code>firebrick</code>)</li>
+</ol>
+<pre class="r"><code>ggplot(data = ce, aes(x = BET.mt)) +
+  geom_density(adjust = 0.5, fill = &quot;firebrick&quot;, color=NA) + 
+  labs(x=&#39;Monthly bigeye catch (mt)&#39;, y=&#39;Smoothed count&#39;, title=&#39;Bigeye tuna&#39;, 
+       subtitle=&#39;A tuna previously thought to be overfished&#39;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-6-1.png" width="3500" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Make a scatter plot of yellowfin catch (Y) vs. bigeye catch (X).</li>
+</ol>
+<pre class="r"><code>ggplot(data = ce, aes(x = BET.mt, y = YFT.mt)) +
+  geom_point() +
+  ggtitle(&#39;Yellowfin vs. bigeye catch&#39;) </code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-7-1.png" width="3500" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Make a scatter plot of yellowfin catch by month, with the years coloured as categories.</li>
+</ol>
+<pre class="r"><code>ggplot(data = ce, aes(x = Month, y = YFT.mt, color=as.factor(Yr))) +
+  geom_point() +
+  ggtitle(&quot;Monthly yellowfin catch&quot;) + ylab(&#39;Yellowfin catch (mt)&#39;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-8-1.png" width="3500" /></p>
+<p><strong>Bonus exercise (woop!)</strong></p>
+<p>Plot the average yellowfin catch per month (use <code>dcast</code> to create a new dataset with the mean.) Don’t call it Brad.</p>
+<p>Step 1: Calculate the mean YFT catch per month (goal: get a table with a month column, and a column for mean YFT catch)</p>
+<pre class="r"><code>library(reshape2)
+## First read-in the dataset from this morning
+ce.long &lt;- read.csv(&#39;sample_data-long.csv&#39;)
+## Now calculate the mean catch by species and month
+tuna.mean &lt;- dcast(ce.long, Month ~ Species, value.var=&#39;Catch.mt&#39;, fun.aggregate=mean)
+head(tuna.mean)</code></pre>
+<pre><code>  Month       ALB       BET      OTH      YFT
+1     1  95.25882  6.096174 22.40157 30.30744
+2     2  46.20435  6.226138 18.33905 16.67016
+3     3  43.57900  8.231454 15.07012 15.04155
+4     4  81.69371  9.533266 14.03734 16.16526
+5     5 153.49813 14.854605 19.06319 29.83772
+6     6 147.77786 10.134886 21.12565 22.86039</code></pre>
+<p>Step 2: Make the plot with month as the x-variable and mean YFT as the y-variable</p>
+<pre class="r"><code>ggplot(data=tuna.mean, aes(x=Month, y=ALB)) + geom_point() + geom_line()</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-10-1.png" width="3500" /></p>
+<div id="adding-both-yft-bet-and-alb-on-the-same-plot-when-we-have-individual-columns-for-each" class="section level4">
+<h4><span class="header-section-number">5.2.0.1</span> Adding both YFT, BET and ALB on the same plot when we have individual columns for each</h4>
+<pre class="r"><code>ggplot(data=tuna.mean, aes(x=Month, y=ALB)) + geom_line(color=&#39;forestgreen&#39;) + 
+  geom_line(aes(y=YFT), color=&#39;gold&#39;) + 
+  geom_line(aes(y=BET), color=&#39;firebrick&#39;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-11-1.png" width="3500" /></p>
+</div>
+</div>
+</div>
+<div id="adding-a-trend-line-to-the-plot" class="section level1">
+<h1><span class="header-section-number">6</span> Adding a trend line to the plot</h1>
+<p>Adding a smoothed line helps in following the pattern of the points, and this can be done with the function <strong>geom_smooth</strong>, with the default a <em>loess curve</em> with a 95% confidence interval.</p>
+<p>This is adding a linear regression</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt, y = BET.mt))  +
+  geom_point() +
+  geom_smooth(method=&#39;lm&#39;, colour = &quot;red&quot;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/ggplot%20scatterplot%20II-1.png" width="3500" /></p>
+<p>This is adding a smoother</p>
+<pre class="r"><code>ggplot(data = ce, aes(x = ALB.mt, y = BET.mt))  +
+  geom_point() +
+  geom_smooth(colour = &quot;red&quot;)</code></pre>
+<pre><code>`geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-12-1.png" width="3500" /></p>
+<div id="monthly-albacore-catch-over-time" class="section level2">
+<h2><span class="header-section-number">6.1</span> Monthly albacore catch over time</h2>
+<p>The <em>ce</em> data frame has columns labelled year and month, but they are given as integers, and R does not know that 12 means December. We create a numeric year-month variable by transforming the months into fractions of the year.</p>
+<pre class="r"><code># Make a new column called date
+ce$date &lt;- ce$Yr + (ce$Month-1)/12
+head(ce$date)</code></pre>
+<p>Now we the plot the catch over time.</p>
+<pre class="r"><code>ggplot(ce, aes(x = date, y = ALB.mt)) + 
+  geom_point() + 
+  geom_line(colour = &quot;brown&quot;, linetype = 2)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/plot%20albacore%20catch%20over%20time-1.png" width="3500" /></p>
+<div id="adding-plot-labels" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Adding plot labels</h3>
+<p>You can easily add axes labels and a plot title with ggplot, using the commands <code>xlab</code>, <code>ylab</code> and <code>ggtitle</code>:</p>
+<pre class="r"><code>ggplot(ce, aes(x = date, y = ALB.mt)) + 
+  geom_point() + 
+  geom_line(colour = &quot;brown&quot;, linetype = 2) + 
+  xlab(&quot;Date&quot;) + 
+  ylab(&quot;Monthly albacore catch (metric tonnes)&quot;) +
+  ggtitle(&quot;Albacore catch over time&quot;)</code></pre>
+<p><img src="introduction-to-ggplot2_LTB-modif_files/figure-html/unnamed-chunk-13-1.png" width="3500" /></p>
+</div>
+</div>
+</div>
+<div id="further-examples-and-help-on-the-internet" class="section level1">
+<h1><span class="header-section-number">7</span> Further examples and help on the internet</h1>
+<p>Solutions to common graphing problems</p>
+<p><a href="http://www.cookbook-r.com/Graphs/index.html" class="uri">http://www.cookbook-r.com/Graphs/index.html</a></p>
+<p>Similar to the first link, but more detailed. Lots of example plots.</p>
+<p><a href="http://www.sthda.com/english/wiki/ggplot2-essentials" class="uri">http://www.sthda.com/english/wiki/ggplot2-essentials</a></p>
+<p>All of the package functions on one page, with examples</p>
+<p><a href="http://docs.ggplot2.org/current/" class="uri">http://docs.ggplot2.org/current/</a></p>
+</div>
+
+<p>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
