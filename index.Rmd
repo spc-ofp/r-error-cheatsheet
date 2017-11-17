@@ -27,5 +27,5 @@ The best way to find help online is on [Stack Overflow](https://stackoverflow.co
 - Cheatsheets from the R community: 
     * [basics](https://cran.r-project.org/doc/contrib/Short-refcard.pdf)
     * [ggplot2](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
-    * data manipulation
+    * [data manipulation](https://sites.ualberta.ca/~ahamann/teaching/renr690/R_Cheat_Data.pdf)
     * [R markdown](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)

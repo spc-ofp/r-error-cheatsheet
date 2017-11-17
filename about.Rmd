@@ -1,0 +1,15 @@
+---
+title: 'About'
+---
+
+This website assembles the content presented by the Pacific Community in two introductory R workshops presented to fisheries officers from countries across the Pacific.
+
+- TVM Auckland (2016), funded by Te Vaka Moana and in collaboration with NIWA 
+- PNA Koror (2017), funded by PNA with generous support from the Palau Bureau of Marine Resources
+
+
+For more info, contact Laura Tremblay-Boyer or Stephen Brouwer at the Pacific Community.
+
+This content is provided free, please free to modify and share, but please do not use for commercial purposes.
+
+<p align='left'><img src='licence-cc-by-nc-sa.png'></p>

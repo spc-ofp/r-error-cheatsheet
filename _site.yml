@@ -1,18 +1,5 @@
 name: "my-website"
 output_dir: "."
-navbar:
-  title: "R tutorials"
-  left:
-    - text: "Home"
-      href: index.html
-    - text: "Getting started"
-      href: intro.html
-    - text: "Data manipulation"
-      href: data-manip-intro.html
-    - text: "Mapping"
-      href: ggplot_maps.html
-    - text: "Bug help"
-      href: bug.html
 output: 
   html_document:
     theme: cosmo
