@@ -2,6 +2,12 @@
 title: 'About'
 ---
 
+```{r setup, include=FALSE}
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+<i class="fa fa-file"></i>
+
 This website assembles the content presented by the Pacific Community in two introductory R workshops presented to fisheries officers from countries across the Pacific.
 
 - TVM Auckland (2016), funded by Te Vaka Moana and in collaboration with NIWA 
