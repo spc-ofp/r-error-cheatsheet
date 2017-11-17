@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+data-manip-intro_1_cache/html/unnamed-chunk-5_9af692e5196344d81245bf8b30b5d900.RData
+_cache
+*.rdx
+*.rdb
+.*_cache.*
+*_cache/*
