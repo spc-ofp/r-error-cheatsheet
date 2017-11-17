@@ -10,6 +10,6 @@ This website assembles the content presented by the Pacific Community in two int
 
 For more info, contact Laura Tremblay-Boyer or Stephen Brouwer at the Pacific Community.
 
-This content is provided free, please free to modify and share, but please do not use for commercial purposes.
+Feel free to modify and share this content, but please do not use for commercial purposes.
 
-<p align='left'><img src='licence-cc-by-nc-sa.png'></p>
+<p align='left' width="50%" height="50%"><img src='licence-cc-by-nc-sa.png'></p>

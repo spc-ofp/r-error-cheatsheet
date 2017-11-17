@@ -2,8 +2,10 @@
 title: "Introduction to the ggplot2 package"
 output:
   html_document:
-    toc: yes
-    toc_float: true
+    hightlight: tango
+    toc: true
+    toc_float:
+      collapsed: false
 ---
 
 ```{r setup, include=FALSE}
