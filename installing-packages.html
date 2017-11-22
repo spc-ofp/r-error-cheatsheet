@@ -11,7 +11,7 @@
 
 
 
-<title>Importing a report from Dorado</title>
+<title>Installing R packages</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -321,47 +321,30 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Importing a report from Dorado</h1>
+<h1 class="title toc-ignore">Installing R packages</h1>
 
 </div>
 
 
-<div id="get-the-.csv-from-dorado" class="section level1">
-<h1>Get the .csv from Dorado</h1>
-<p>To get the Dorado report in a .csv, navigate to the report’s page, define report settings (if needed) and refresh. Click on the .csv icon to download the report as a .csv. <img src="how-to-dorado-csv.png" /></p>
+<p>Packages in R (also called libraries) are shared by the R community at large and allow to expand the capabilities of the base R software by many folds. They provide a set of extra R functions around a specific theme like plotting (e.g. <code>ggplot2</code>), date manipulation (e.g. <code>lubridate</code>), statistics (e.g. <code>mgcv</code>), etc. They are great and you will learn to rely on them quickly for day-to-day tasks. You first need to install a package in R to make it available. This is very easy.</p>
+<div id="in-r-studio" class="section level1">
+<h1>In R Studio</h1>
+<p><img src="rstudio-install-1.png" /> <img src="rstudio-install-2.png" /></p>
 </div>
-<div id="importing-the-dorado-.csv-into-r" class="section level1">
-<h1>Importing the Dorado .csv into R</h1>
-<p>To import your saved Dorado .csv into R as a table (or, in R speak, a <code>data frame</code>), use the function <code>read.csv()</code>. Note: you use to specify the argument <code>fileEncoding='UTF-8-BOM'</code> otherwise the first column’s name will include weird characters. This is only necessary for reports saved straight from the Dorado website, you should not have to do this with a normal .csv.</p>
-<p>ps: For R to store the report as an object, you need to pick a name for it and use <code>&lt;-</code> to assign the output of <code>read.csv</code> to your chosen name.</p>
-<pre class="r"><code>report99 &lt;- read.csv(&#39;C:/path/to/dorado/report/report.csv&#39;, fileEncoding = &#39;UTF-8-BOM&#39;) # the table is now stored in the object report99
-
-## OR, tell R to use a default folder for data import and export (the *working directory*)
-setwd(&#39;C:/path/to/dorado/report/&#39;)
-# no need to specify the path to .csv since we already told R which folder to look into by default
-report99 &lt;- read.csv(&#39;report.csv&#39;, fileEncoding = &#39;UTF-8-BOM&#39;) 
-
-# have a look: 
-head(report99) # head() shows the first 6 rows of a data frame</code></pre>
+<div id="in-the-console" class="section level1">
+<h1>In the console</h1>
+<pre class="r"><code>install.packages(&#39;ggplot2&#39;)</code></pre>
 </div>
-<div id="optional-modifying-the-column-names" class="section level1">
-<h1>Optional: Modifying the column names</h1>
-<p>Because <code>R</code> cannot have column names with spaces, the Dorado default headers often end up being quite long (and a pain to retype later on when you need to refer to them!). You can either rename the columns of the entire data frame in a go, or you can pick specific columns.</p>
-<div id="using-names" class="section level2">
-<h2>Using <strong>names()</strong></h2>
-<pre class="r"><code>names(report99)
-names(report99) &lt;- c(&#39;Year&#39;, &#39;Month&#39;, &#39;ALB.mt&#39;)</code></pre>
+<div id="from-the-.zip" class="section level1">
+<h1>From the .zip</h1>
+<p>You can find the .zip for R packages on the Comprehensive R Archive Network (CRAN). Once</p>
+<pre class="r"><code>install.packages(&#39;C:/path/to/your/package/zip/ggplot2.zip&#39;, repos=NULL, type=&#39;source&#39;)</code></pre>
 </div>
-<div id="modifying-the-name-of-specific-columns" class="section level2">
-<h2>Modifying the name of specific columns</h2>
-<p>If you know the position of your column, you can change its name as follow:</p>
-<pre class="r"><code>rownames(t(report99))
-names(report99)[3] &lt;- &#39;ALB.mt&#39;</code></pre>
-<p>However, if later on the format of the files changes, you might be renaming the Month column instead…! An alternative is to directly use the column names so that even if the position changes in the original .csv, R will know which column you are referring to.</p>
-<pre class="r"><code>require(dplyr) # load the dplyr library to access the rename function
-report99 &lt;- rename(report99, ALB.mt = ALB.mt)
-report99 &lt;- rename(report99, ALB.mt = ALB.mt, Month..=Month) # ps. In RStudio pressing tab within the rename function should give you a list of the existing column names in the data.frame</code></pre>
-</div>
+<div id="where-are-my-packages-installed" class="section level1">
+<h1>Where are my packages installed?</h1>
+<p>To see where R installs your packages, look at the first item returned by:</p>
+<pre class="r"><code>.libPaths()</code></pre>
+<p>If you want R to install packages elsewhere, you can either specify it manually by setting the argument <code>lib</code> when launching <code>install.packages()</code>, or use the R Studio install tool to pick another install location. To change it permanently, have a look <a href="http://blog.revolutionanalytics.com/2015/11/r-projects.html">here</a>.</p>
 </div>
 
 <p padding-top: 3cm>Copyright &copy; 2017 Pacific Community. All rights reserved.</p>

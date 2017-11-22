@@ -6,9 +6,9 @@ title: 'About'
 htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 ```
 
-<i class="fa fa-file"></i>
 
-This website assembles the content presented by the Pacific Community in two introductory R workshops presented to fisheries officers from countries across the Pacific.
+
+<i class="fa fa-chevron-circle-right"></i> This website assembles the content presented by the Pacific Community in two introductory R workshops presented to fisheries officers from countries across the Pacific.
 
 - TVM Auckland (2016), funded by Te Vaka Moana and in collaboration with NIWA 
 - PNA Koror (2017), funded by PNA with generous support from the Palau Bureau of Marine Resources
@@ -18,4 +18,4 @@ For more info, contact Laura Tremblay-Boyer or Stephen Brouwer at the Pacific Co
 
 Feel free to modify and share this content, but please do not use for commercial purposes.
 
-<p align='left' width="50%" height="50%"><img src='licence-cc-by-nc-sa.png'></p>
+<p><img src='licence-cc-by-nc-sa.png' style="align: left; max-width: 15%; max-height: 15%"></p>
